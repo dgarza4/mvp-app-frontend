@@ -1,0 +1,27 @@
+{
+	"parser": "@typescript-eslint/parser",
+	"extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended",
+		"react-app",
+		"prettier",
+		"prettier/@typescript-eslint"
+	],
+	"plugins": ["@typescript-eslint", "react", "react-hooks"],
+	"rules": {
+		"curly": "error",
+		"no-console": ["error", { "allow": ["warn", "error"] }],
+		"object-literal-sort-keys": 0,
+		"max-line-length": 0,
+		"react-hooks/rules-of-hooks": "error",
+		"react-hooks/exhaustive-deps": "warn",
+		"semi": ["error", "always"],
+		"@typescript-eslint/explicit-function-return-type": "off",
+		"@typescript-eslint/no-unused-vars": 2,
+		"@typescript-eslint/no-explicit-any": 0,
+		"@typescript-eslint/interface-name-prefix": 0,
+		"@typescript-eslint/array-type": 0,
+		"@typescript-eslint/no-empty-interface": 0
+	}
+}
