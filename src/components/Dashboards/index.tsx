@@ -2,10 +2,7 @@ import React, { FC, useState } from "react";
 import { Box, Text } from "grommet";
 import Tabs from "components/Tabs";
 
-const tabValues = [
-  "Tab 1",
-  "Tab 2",
-];
+const tabValues = ["Tab 1", "Tab 2"];
 
 const Dashboards: FC = () => {
   const [activeTab, setActiveTab] = useState<string>(tabValues[0]);
