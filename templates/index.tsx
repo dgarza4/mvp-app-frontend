@@ -2,7 +2,7 @@ import React, { FC } from "react";
 import { Box } from "grommet";
 import { Wrapper, StyledText } from "./styles";
 
-const AppHeader: FC = () => {
+const Component: FC = () => {
   return (
     <Box>
       <Wrapper direction="row">
@@ -12,4 +12,4 @@ const AppHeader: FC = () => {
   );
 };
 
-export default AppHeader;
+export default Component;
