@@ -6,6 +6,7 @@ import theme from "./styles/theme";
 import AppHeader from "components/AppHeader";
 import Dashboards from "components/Dashboards";
 import Assets from "components/Assets";
+import Footer from "components/Footer";
 
 const Grommet = styled(UnstyledGrommet)`
   display: flex;
@@ -15,15 +16,18 @@ const Grommet = styled(UnstyledGrommet)`
 `;
 
 const App = (): ReactElement => (
-  <Grommet theme={theme} plain>
-    <AppHeader />
-    <Switch>
-      <Route path="/assets" component={Assets} exact />
-      <Route path="/" component={Dashboards} exact />
+  <>
+    <Grommet theme={theme} plain>
+      <AppHeader />
+      <Switch>
+        <Route path="/assets" component={Assets} exact />
+        <Route path="/" component={Dashboards} exact />
 
-      <Route render={() => <Box pad="medium">Not found</Box>} />
-    </Switch>
-  </Grommet>
+        <Route render={() => <Box pad="medium">Not found</Box>} />
+      </Switch>
+    </Grommet>
+    <Footer />
+  </>
 );
 
 export default App;
