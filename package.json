@@ -12,7 +12,7 @@
     "bundle-analyzer": "webpack-bundle-analyzer ./build/bundle-stats.json",
     "test-coverage": "npm test -- --coverage",
     "view-coverage": "open coverage/index.html",
-    "generate-component": "node templates/copy-templates.js ${0}"
+    "gc": "node templates/copy-templates.js ${0}"
   },
   "dependencies": {
     "grommet": "^2.7.3",
