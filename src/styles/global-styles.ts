@@ -23,8 +23,7 @@ const GlobalStyle = createGlobalStyle`
 		padding: 0;
 		-webkit-font-smoothing: antialiased;
 		-moz-osx-font-smoothing: grayscale;
-		font-family: 'Work Sans', serif;
-		letter-spacing: -1px;
+		font-family: 'Nunito Sans', serif;
 	}
 	
 	#root {
