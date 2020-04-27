@@ -4385,7 +4385,7 @@ grommet-styles@^0.2.0:
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/grommet-styles/-/grommet-styles-0.2.0.tgz#b2eac2b7e2747cb523434d21728ce5234f8ce4f4"
 
-grommet@^2.7.3:
+grommet@^2.13.0:
   version "2.13.0"
   resolved "https://registry.yarnpkg.com/grommet/-/grommet-2.13.0.tgz#588f2d64358e9edb629e4e3fc3365b0cd5cc7db4"
   dependencies:
