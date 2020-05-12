@@ -12,21 +12,32 @@ const Grommet = styled(UnstyledGrommet)`
   display: flex;
   flex-direction: column;
   flex: 1;
-  min-height: 100vh;
+
+  .max-width-container {
+    min-height: calc(100vh - 64px);
+    align-self: center;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    width: 100%;
+    max-width: 1440px;
+  }
 `;
 
 const App = (): ReactElement => (
   <>
     <Grommet theme={theme} plain>
       <AppHeader />
-      <Switch>
-        <Route path="/assets" component={Assets} exact />
-        <Route path="/" component={Landing} exact />
+      <div className="max-width-container">
+        <Switch>
+          <Route path="/assets" component={Assets} exact />
+          <Route path="/" component={Landing} exact />
 
-        <Route render={() => <Box pad="medium">Not found</Box>} />
-      </Switch>
+          <Route render={() => <Box pad="medium">Not found</Box>} />
+        </Switch>
+      </div>
+      <Footer />
     </Grommet>
-    <Footer />
   </>
 );
 
