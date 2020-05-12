@@ -4,7 +4,7 @@ import Tabs from "components/Tabs";
 
 const tabValues = ["Tab 1", "Tab 2"];
 
-const Dashboards: FC = () => {
+const Landing: FC = () => {
   const [activeTab, setActiveTab] = useState<string>(tabValues[0]);
   return (
     <Box margin={{ horizontal: "medium" }}>
@@ -18,4 +18,4 @@ const Dashboards: FC = () => {
   );
 };
 
-export default Dashboards;
+export default Landing;

@@ -29,7 +29,7 @@ interface TabProps {
 const Tabs: FC<TabProps> = ({ activeTab, setActiveTab, values }) => {
   return (
     <Box direction="row" justify="around">
-      {values.map(tabValue => (
+      {values.map((tabValue) => (
         <Tab
           key={`tab_${tabValue}`}
           label={tabValue}

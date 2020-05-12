@@ -9,7 +9,7 @@ type Props = BoxProps & {
 
 const Loader: FC<Props> = ({ size = 20, color, ...props }) => (
   <Box pad="large" align="center" justify="center" flex {...props}>
-    <BeatLoader loading size={size} color="grey" sizeUnit="px" />
+    <BeatLoader loading size={size} color="grey" />
   </Box>
 );
 

@@ -4,7 +4,7 @@ import { Box, Grommet as UnstyledGrommet } from "grommet";
 import { Route, Switch } from "react-router";
 import theme from "./styles/theme";
 import AppHeader from "components/AppHeader";
-import Dashboards from "components/Dashboards";
+import Landing from "components/Landing";
 import Assets from "components/Assets";
 import Footer from "components/Footer";
 
@@ -21,7 +21,7 @@ const App = (): ReactElement => (
       <AppHeader />
       <Switch>
         <Route path="/assets" component={Assets} exact />
-        <Route path="/" component={Dashboards} exact />
+        <Route path="/" component={Landing} exact />
 
         <Route render={() => <Box pad="medium">Not found</Box>} />
       </Switch>
