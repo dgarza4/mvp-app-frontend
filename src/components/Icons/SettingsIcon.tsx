@@ -10,7 +10,7 @@ interface IIconProps {
 const SettingsIcon: FC<IIconProps> = ({
   width = 24,
   height = 24,
-  fill = theme.global.colors.azureBlue,
+  fill = theme.global.colors.azureBlue
 }) => {
   return (
     <svg width={width} height={height} viewBox="0 0 24 24">

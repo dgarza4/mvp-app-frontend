@@ -2,11 +2,11 @@ import React, { FC } from "react";
 import { SidebarContainer, StyledText } from "./styles";
 
 interface IProps {
-  hidden?: boolean;
+  show?: boolean;
 }
 
-const Sidebar: FC<IProps> = ({ hidden }) => (
-  <SidebarContainer className={hidden ? "" : "open"}>
+const Sidebar: FC<IProps> = ({ show }) => (
+  <SidebarContainer className={show ? "open" : ""}>
     <StyledText>Text</StyledText>
   </SidebarContainer>
 );

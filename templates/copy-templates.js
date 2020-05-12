@@ -15,7 +15,9 @@ const charRegex = /(-|_)/g;
 const componentName = rawName.replace(charRegex, " ").split(" ").map(capitalize).join("");
 
 fs.mkdirSync(__dirname + `/../src/components/${componentName}`);
-fs.copyFileSync(__dirname + "/index.tsx", __dirname + `/../src/components/${componentName}/index.tsx`);
+const indexFile = fs.readFileSync(__dirname + "/index.tsx", "utf8");
+
+fs.writeFileSync(__dirname + `/../src/components/${componentName}/index.tsx`, indexFile.replace(/ComponentName/g, componentName));
 fs.copyFileSync(__dirname + "/styles.tsx", __dirname + `/../src/components/${componentName}/styles.tsx`);
 
 /* eslint-enable */

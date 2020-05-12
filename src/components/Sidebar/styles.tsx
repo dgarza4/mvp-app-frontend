@@ -6,14 +6,16 @@ export const StyledText = styled(Text)`
 `;
 
 export const SidebarContainer = styled.div`
-  height: calc(100vh - 85px);
+  height: calc(100vh - 64px);
+  padding: 0 30px;
+  box-shadow: 0 0px 8px 2px rgba(0, 0, 0, 0.3);
   position: fixed;
   z-index: 10;
-  left: -345px;
-  background-color: #1c1c1c;
+  left: -350px;
+  background-color: #fff;
   overflow-x: hidden;
   transition: left 0.5s;
-  top: 85px;
+  top: 64px;
   width: 345px;
 
   &.open {
