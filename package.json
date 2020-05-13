@@ -9,7 +9,7 @@
     "lint": "eslint --ext .jsx,.js,.tsx,.ts src/",
     "lint-fix": "eslint --fix --ext .jsx,.js,.tsx,.ts src/",
     "test": "react-scripts test",
-    "bundle-analyzer": "webpack-bundle-analyzer ./build/bundle-stats.json",
+    "analyze": "react-scripts build && source-map-explorer 'build/static/js/*.js'",
     "test-coverage": "npm test -- --coverage",
     "view-coverage": "open coverage/index.html",
     "gc": "node templates/copy-templates.js ${0}"
@@ -22,6 +22,7 @@
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.1",
     "react-spinners": "^0.8.3",
+    "source-map-explorer": "^2.4.2",
     "styled-components": "^5.1.0",
     "typescript": "^3.8.3"
   },
@@ -54,8 +55,7 @@
     "eslint-config-react-app": "^5.2.1",
     "eslint-plugin-react-hooks": "^4.0.0",
     "husky": "^4.2.5",
-    "prettier": "^2.0.5",
-    "webpack-bundle-analyzer": "^3.7.0"
+    "prettier": "^2.0.5"
   },
   "jest": {
     "coverageReporters": [
