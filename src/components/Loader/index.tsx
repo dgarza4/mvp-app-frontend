@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import { Box, BoxProps } from "grommet";
+import { Box, BoxProps } from "react-basic-blocks";
 import { BeatLoader } from "react-spinners";
 
 type Props = BoxProps & {
@@ -8,7 +8,7 @@ type Props = BoxProps & {
 };
 
 const Loader: FC<Props> = ({ size = 20, color, ...props }) => (
-  <Box pad="large" align="center" justify="center" flex {...props}>
+  <Box padding="20px" alignItems="center" justifyContent="center" {...props}>
     <BeatLoader loading size={size} color="grey" />
   </Box>
 );

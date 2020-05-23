@@ -1,14 +1,13 @@
 import React, { ReactElement } from "react";
 import styled from "styled-components/macro";
-import { Box, Grommet as UnstyledGrommet } from "grommet";
+import { Box } from "react-basic-blocks";
 import { Route, Switch } from "react-router";
-import theme from "./styles/theme";
 import AppHeader from "components/AppHeader";
 import Landing from "components/Landing";
 import Assets from "components/Assets";
 import Footer from "components/Footer";
 
-const Grommet = styled(UnstyledGrommet)`
+const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   flex: 1;
@@ -26,18 +25,18 @@ const Grommet = styled(UnstyledGrommet)`
 
 const App = (): ReactElement => (
   <>
-    <Grommet theme={theme} plain>
+    <Wrapper>
       <AppHeader />
       <div className="max-width-container">
         <Switch>
           <Route path="/assets" component={Assets} exact />
           <Route path="/" component={Landing} exact />
 
-          <Route render={() => <Box pad="medium">Not found</Box>} />
+          <Route render={() => <Box padding="20px">Not found</Box>} />
         </Switch>
       </div>
       <Footer />
-    </Grommet>
+    </Wrapper>
   </>
 );
 

@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import { Box, Text, BoxProps } from "grommet";
+import { Box, Text, BoxProps } from "react-basic-blocks";
 import { StatusCritical } from "grommet-icons";
 
 type Props = BoxProps & {
@@ -14,9 +14,9 @@ const ErrorNotice: FC<Props> = ({
   color = "black",
   ...props
 }) => (
-  <Box pad="large" align="center" justify="center" flex {...props}>
+  <Box padding="40px" alignItems="center" justifyContent="center" {...props}>
     {icon ? icon : <StatusCritical size="large" color={color} />}
-    <Text size="medium" margin={{ top: "medium" }} color={color}>
+    <Text fontSize="medium" margin="20px 0" color={color}>
       {message}
     </Text>
   </Box>

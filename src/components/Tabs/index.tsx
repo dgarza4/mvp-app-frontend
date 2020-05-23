@@ -1,6 +1,5 @@
 import React, { FC } from "react";
-import { Box, Text } from "grommet";
-import { PointerBox } from "styles/styles";
+import { Box, Text } from "react-basic-blocks";
 
 interface ITabProps {
   label: string;
@@ -9,15 +8,16 @@ interface ITabProps {
 }
 
 const Tab: FC<ITabProps> = ({ label, active, onClick }) => (
-  <PointerBox
+  <Box
     margin="medium"
-    border={active ? { size: "2px", side: "bottom", color: "red" } : undefined}
+    borderBottom={active ? "2px solid red" : undefined}
     onClick={onClick}
+    cursor="pointer"
   >
-    <Text size="18px" weight={200} margin={{ bottom: "10px" }}>
+    <Text fontSize="18px" fontWeight={200} margin="0 0 10px 0">
       {label}
     </Text>
-  </PointerBox>
+  </Box>
 );
 
 interface TabProps {
@@ -28,7 +28,7 @@ interface TabProps {
 
 const Tabs: FC<TabProps> = ({ activeTab, setActiveTab, values }) => {
   return (
-    <Box direction="row" justify="around">
+    <Box flexDirection="row" justifyContent="space-around">
       {values.map((tabValue) => (
         <Tab
           key={`tab_${tabValue}`}

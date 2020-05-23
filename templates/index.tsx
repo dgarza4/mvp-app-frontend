@@ -1,11 +1,11 @@
 import React, { FC } from "react";
-import { Box } from "grommet";
+import { Box } from "react-basic-blocks";
 import { Wrapper, StyledText } from "./styles";
 
 const ComponentName: FC = () => {
   return (
     <Box>
-      <Wrapper direction="row">
+      <Wrapper flexDirection="row">
         <StyledText>ComponentName</StyledText>
       </Wrapper>
     </Box>

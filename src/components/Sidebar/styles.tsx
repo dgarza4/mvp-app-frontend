@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { Text } from "grommet";
+import { Text } from "react-basic-blocks";
 
 export const StyledText = styled(Text)`
   font-size: 20px;

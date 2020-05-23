@@ -15,9 +15,10 @@
     "gc": "node templates/copy-templates.js ${0}"
   },
   "dependencies": {
-    "grommet": "^2.13.0",
+    "grommet-icons": "^4.4.0",
     "polished": "^3.4.1",
     "react": "^16.13.1",
+    "react-basic-blocks": "^0.0.3",
     "react-dom": "^16.13.1",
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.1",

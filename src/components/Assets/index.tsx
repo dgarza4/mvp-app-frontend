@@ -1,10 +1,10 @@
 import React, { FC } from "react";
-import { Box, Text } from "grommet";
+import { Box, Text } from "react-basic-blocks";
 
 const Assets: FC = () => {
   return (
-    <Box margin="medium">
-      <Text size="32px">Assets</Text>
+    <Box margin="20px">
+      <Text fontSize="32px">Assets</Text>
     </Box>
   );
 };

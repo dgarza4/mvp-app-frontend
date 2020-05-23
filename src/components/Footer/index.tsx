@@ -5,8 +5,12 @@ interface IProps {}
 
 const Footer: FC<IProps> = () => {
   return (
-    <FooterWrapper direction="row" justify="center" align="center">
-      <LinkWrapper direction="row" justify="between">
+    <FooterWrapper
+      flexDirection="row"
+      justifyContent="center"
+      alignItems="center"
+    >
+      <LinkWrapper flexDirection="row" justifyContent="space-between">
         <FooterLink to="/search">CATEGORIES</FooterLink>
         <FooterLink to="/terms-of-use">TERMS</FooterLink>
         <FooterLink to="/privacy-policy">PRIVACY</FooterLink>

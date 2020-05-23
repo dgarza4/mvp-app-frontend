@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { Box } from "grommet";
+import { Box } from "react-basic-blocks";
 import { Link } from "react-router-dom";
 
 export const FooterLink = styled(Link)`
