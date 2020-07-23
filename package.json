@@ -12,7 +12,7 @@
     "analyze": "react-scripts build && source-map-explorer 'build/static/js/*.js'",
     "test-coverage": "npm test -- --coverage",
     "view-coverage": "open coverage/index.html",
-    "gc": "node templates/copy-templates.js ${0}"
+    "postbuild": "react-snap"
   },
   "dependencies": {
     "grommet-icons": "^4.4.0",
@@ -22,6 +22,7 @@
     "react-dom": "^16.13.1",
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.1",
+    "react-snap": "^1.23.0",
     "react-spinners": "^0.8.3",
     "source-map-explorer": "^2.4.2",
     "styled-components": "^5.1.0",
