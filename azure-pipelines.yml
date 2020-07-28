@@ -1,0 +1,134 @@
+trigger:
+- master
+
+#schedules:
+#- cron: "*/15 * * * *"
+#  displayName: Fifteen minute content build
+#  branches:
+#    include:
+#    - master 
+#  always: true  
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+stages:
+  - stage: StagingDeploy  
+    displayName: "Deploy To Staging"
+    jobs:
+      - job: Build
+        steps:
+          - task: NodeTool@0
+            displayName: 'Install Node.js'
+            inputs:
+              versionSpec: '10.x'
+          - script: |
+              yarn
+              if [ $? -ne 0 ]; then
+                  exit 1
+              fi
+            displayName: 'yarn install'          
+          - script: |   
+              yarn build-dev
+              if [ $? -ne 0 ]; then
+                  exit 1
+              fi  
+            displayName: 'Build deployable package'            
+          - publish: $(Build.Repository.LocalPath)/build
+            artifact: StagingWebApp
+      - deployment: StagingDeploy
+        displayName: "Deploy"
+        pool: 
+          vmImage: 'ubuntu-latest'
+        environment: 'CHANGE_ENV_NAME-dev'
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+              - download: current
+                artifact: StagingWebApp
+              - task: S3Upload@1
+                displayName: 'Upload yarn build output to S3 bucket'
+                inputs:
+                  awsCredentials: 'CDP AWS Subscription'
+                  regionName: 'us-east-2'
+                  bucketName: 'CHANGE_BUCKET_NAME'
+                  sourceFolder: '$(Pipeline.Workspace)/StagingWebApp'
+                  globExpressions: '**'                              
+                  filesAcl: 'public-read'
+      - job: Lighthouse
+        dependsOn: StagingDeploy
+        steps:
+          - task: Lighthouse@1
+            inputs:
+              url: 'CHANGE_DEV_URL'
+              args: '--quiet'
+              assertions: |
+                no-vulnerable-libraries = 1
+                robots-txt = 1
+                speed-index > 0.5
+  
+  - stage: ProductionDeploy  
+    displayName: "Deploy To Production"
+    dependsOn:
+      - StagingDeploy
+    jobs:
+      - job: Build
+        steps:
+          - task: NodeTool@0
+            displayName: 'Install Node.js'
+            inputs:
+              versionSpec: '10.x'
+          - script: |
+              yarn
+              if [ $? -ne 0 ]; then
+                  exit 1
+              fi
+            displayName: 'yarn install'          
+          - script: |   
+              yarn build
+              if [ $? -ne 0 ]; then
+                  exit 1
+              fi  
+            displayName: 'Build deployable package'                    
+          - publish: $(Build.Repository.LocalPath)/build
+            artifact: ProductionWebApp
+      - deployment: ProductionDeploy
+        displayName: "Deploy"
+        pool: 
+          vmImage: 'ubuntu-latest'
+        environment: 'CHANGE_ENV_NAME-prod'
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+              - download: current
+                artifact: ProductionWebApp
+              - task: S3Upload@1
+                displayName: 'Upload yarn build output to S3 bucket'
+                inputs:
+                  awsCredentials: 'CDP AWS Subscription'
+                  regionName: 'us-west-2'
+                  bucketName: 'endeavor-speakers'
+                  sourceFolder: '$(Pipeline.Workspace)/ProductionWebApp'
+                  globExpressions: '**'          
+                  filesAcl: 'public-read'
+              - task: AWSCLI@1
+                displayName: 'Invalidate CDN caching of index.html'
+                inputs:
+                  awsCredentials: 'CDP AWS Subscription'
+                  regionName: 'us-west-2'
+                  awsCommand: 'cloudfront'
+                  awsSubCommand: 'create-invalidation'   
+                  awsArguments: '--distribution-id ELPJK0DT806PY --paths "/index.html"'
+      - job: Lighthouse
+        dependsOn: ProductionDeploy
+        steps:
+          - task: Lighthouse@1
+            inputs:
+              url: 'CHANGE_PROD_URL'
+              args: '--quiet'
+              assertions: |
+                no-vulnerable-libraries = 1
+                robots-txt = 1
+                speed-index > 0.5

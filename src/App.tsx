@@ -3,8 +3,8 @@ import styled from "styled-components/macro";
 import { Box } from "react-basic-blocks";
 import { Route, Switch } from "react-router";
 import AppHeader from "components/AppHeader";
-import Landing from "components/Landing";
-import Assets from "components/Assets";
+import Landing from "pages/Landing";
+import Assets from "pages/Assets";
 import Footer from "components/Footer";
 
 const Wrapper = styled.div`
