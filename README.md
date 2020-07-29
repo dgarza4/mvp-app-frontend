@@ -12,9 +12,24 @@ All shared components will be found in the `src/components` directory.
 
 All pages will be found in the `src/pages` directory. Pages are top level destinations that the react-router instance in `App.tsx` can reach.
 
+## Deployment
+
+You will have to create an S3 bucket and [configure it for static website hosting](https://docs.aws.amazon.com/AmazonS3/latest/user-guide/static-website-hosting.html). Make sure to set the `Error document` to `index.html` so that requests to your SPA with paths that do not exist end up opening the app regardless.
+
+If you have a url at hand you can also [configure a cloudfront distribution to serve s3 assets](https://aws.amazon.com/premiumsupport/knowledge-center/cloudfront-serve-static-website/)
+
+You also need to configure cloudfront so that it returns something even if the path does not exist. Go to CloudFront and click the distribution you want to apply these SPA settings to. Click the Error Pages tab and add a new error page. Fill the form with these fields:
+
+* HTTP Error Code: 404
+* TTL: 0
+* Custom Error Response: Yes
+* Response Page Path: /index.html
+* HTTP Response Code: 200
+
+
 ## Azure Pipelines
 
-You can find the CI pipeline for azure in the `azure-pipelines.yml`. Before you run it, make sure to change all the variables starting with `CHANGE_`.
+You can find the CI pipeline for azure in the `azure-pipelines.yml`. Before you run it, make sure to change all the variables starting with `CHANGE_`. Use the s3 bucket you created in the above step.
 
 ## SEO
 
