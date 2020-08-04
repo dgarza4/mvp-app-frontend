@@ -3,9 +3,10 @@ import styled from "styled-components/macro";
 import { Box } from "react-basic-blocks";
 import { Route, Switch } from "react-router";
 import AppHeader from "components/AppHeader";
+import Settings from "pages/Settings";
 import Landing from "pages/Landing";
-import Assets from "pages/Assets";
 import Footer from "components/Footer";
+import Help from "pages/Help";
 
 const Wrapper = styled.div`
   display: flex;
@@ -29,7 +30,8 @@ const App = (): ReactElement => (
       <AppHeader />
       <div className="max-width-container">
         <Switch>
-          <Route path="/assets" component={Assets} exact />
+          <Route path="/help" component={Help} exact />
+          <Route path="/settings" component={Settings} exact />
           <Route path="/" component={Landing} exact />
 
           <Route render={() => <Box padding="20px">Not found</Box>} />

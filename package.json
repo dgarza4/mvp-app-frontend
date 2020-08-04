@@ -15,12 +15,15 @@
     "postbuild": "react-snap"
   },
   "dependencies": {
+    "@hookform/error-message": "^0.0.3",
+    "fetch-hooks-react": "^0.0.1",
     "grommet-icons": "^4.4.0",
     "polished": "^3.4.1",
     "react": "^16.13.1",
     "react-basic-blocks": "^0.0.3",
     "react-dom": "^16.13.1",
     "react-helmet": "^6.1.0",
+    "react-hook-form": "^6.3.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.1",
     "react-snap": "^1.23.0",

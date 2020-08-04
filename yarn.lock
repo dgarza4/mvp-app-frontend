@@ -1048,6 +1048,11 @@
   dependencies:
     "@hapi/hoek" "^8.3.0"
 
+"@hookform/error-message@^0.0.3":
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/@hookform/error-message/-/error-message-0.0.3.tgz#b6f11d5d9dfe17f0545aecec17fc3b1a9e891d70"
+  integrity sha512-4ZCiyvwcV5GHGira0PnNCgSgEU9Tqo5Kx2yKpku7m943JYqyJfeKIO+zQg2W4CkNSSS905c9BVIo8+ntB08QYA==
+
 "@jest/console@^24.7.1", "@jest/console@^24.9.0":
   version "24.9.0"
   resolved "https://registry.yarnpkg.com/@jest/console/-/console-24.9.0.tgz#79b1bc06fb74a8cfb01cbdedf945584b1b9707f0"
@@ -4237,6 +4242,11 @@ fd-slicer@~1.1.0:
   integrity sha1-JcfInLH5B3+IkbvmHY85Dq4lbx4=
   dependencies:
     pend "~1.2.0"
+
+fetch-hooks-react@^0.0.1:
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/fetch-hooks-react/-/fetch-hooks-react-0.0.1.tgz#732b831cf4260bd393ced842db25f47ed1fad0de"
+  integrity sha512-74YRPQHXmN2yU998su4fP7p6uUPvIdCEcA8yYx0cfPptL7xPol3+CYrg0rb39KUWw6dSbXHD2RIXqad+out6CQ==
 
 figgy-pudding@^3.5.1:
   version "3.5.2"
@@ -8173,6 +8183,11 @@ react-helmet@^6.1.0:
     prop-types "^15.7.2"
     react-fast-compare "^3.1.1"
     react-side-effect "^2.1.0"
+
+react-hook-form@^6.3.0:
+  version "6.3.0"
+  resolved "https://registry.yarnpkg.com/react-hook-form/-/react-hook-form-6.3.0.tgz#5c1926d51d4532f44818ef73f96d1a8c11015a76"
+  integrity sha512-Xz7xxnILftxttc6H+miTSi2eYPehiW3XdsPaqY5dW8HcURFZPrnpxnmaRqz6JtZcbfRM8qjjppP/pOBaUzhn4w==
 
 react-is@^16.12.0, react-is@^16.6.0, react-is@^16.7.0, react-is@^16.8.1, react-is@^16.8.4:
   version "16.13.1"

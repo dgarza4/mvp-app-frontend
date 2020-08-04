@@ -1,24 +1,56 @@
-import React, { FC, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { Box, Text } from "react-basic-blocks";
-import Tabs from "components/Tabs";
 import HeaderTags from "components/HeaderTags";
-
-const tabValues = ["Tab 1", "Tab 2"];
+import { fetchSingle } from "fetch-hooks-react";
+import Loader from "components/Loader";
+import ErrorNotice from "components/ErrorNotice";
+import ToDoItem from "./ToDoItem";
+import { config } from "config";
+import { Add, Checkmark } from "grommet-icons";
+import { IListResults, ITodo } from "interfaces";
 
 const Landing: FC = () => {
-  const [activeTab, setActiveTab] = useState<string>(tabValues[0]);
+  const { data, isLoading, error } = fetchSingle<IListResults<ITodo>>(
+    `${config.apiUrl}/todos`
+  );
+  const [todos, setTodos] = useState<ITodo[]>([]);
+
+  useEffect(() => {
+    setTodos(data?.data || []);
+  }, [data]);
+
+  if (isLoading) {
+    return <Loader />;
+  } else if (error || !data) {
+    return <ErrorNotice />;
+  }
+
   return (
     <>
-      <HeaderTags title="UI Kit" description="This is the assets page" />
-      <Box margin="40px 20px">
-        <Tabs
-          activeTab={activeTab}
-          setActiveTab={setActiveTab}
-          values={tabValues}
-        />
-        <Text fontSize="32px" margin="40px 0">
-          Dashboard
-        </Text>
+      <HeaderTags title="Landing" description="This is the landing page" />
+      <Box margin="20px">
+        <Box
+          flexDirection="row"
+          justifyContent="space-between"
+          alignItems="center"
+        >
+          <Text fontSize="32px">TO DOs </Text>
+          <Box
+            cursor="pointer"
+            onClick={() => setTodos([{} as ITodo, ...todos])}
+          >
+            <Add />
+          </Box>
+        </Box>
+        {todos.map((todo, i) => (
+          <ToDoItem key={`todo-${todo.id}-${i}`} todo={todo} />
+        ))}
+        {todos.length === 0 ? (
+          <Box width="100%" alignItems="center" margin="50px 0">
+            <Checkmark size="100px" color="green" />
+            <Text fontSize="32px">All Done!</Text>
+          </Box>
+        ) : null}
       </Box>
     </>
   );

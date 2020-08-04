@@ -13,12 +13,6 @@ export const Wrapper = styled(Box)`
 `;
 
 export const LogoLink = styled(NavLink)`
-  display: flex;
-  align-items: center;
-  color: inherit;
   text-decoration: none;
-  height: 100%;
   padding-left: 24px;
-  position: relative;
-  z-index: 5;
 `;
