@@ -8,7 +8,8 @@ const onSubmit = (
   data: IData,
   todo: ITodo,
   setStateTodo: (todo: ITodo) => void,
-  setIsEditing: (val: boolean) => void
+  setIsEditing: (val: boolean) => void,
+  token: string | undefined
 ) => {
   const { title } = data;
   if (title) {
@@ -18,6 +19,7 @@ const onSubmit = (
       method: todo.id ? "PUT" : "POST",
       headers: {
         "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
       },
       body: JSON.stringify({ title }),
     })

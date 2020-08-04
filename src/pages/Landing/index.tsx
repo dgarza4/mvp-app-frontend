@@ -8,10 +8,15 @@ import ToDoItem from "./ToDoItem";
 import { config } from "config";
 import { Add, Checkmark } from "grommet-icons";
 import { IListResults, ITodo } from "interfaces";
+import { useKeycloak } from "@react-keycloak/web";
 
 const Landing: FC = () => {
+  const [keycloak] = useKeycloak();
   const { data, isLoading, error } = fetchSingle<IListResults<ITodo>>(
-    `${config.apiUrl}/todos?order=created_at:DESC&where=done:exact:true`
+    `${config.apiUrl}/todos?order=created_at:DESC&where=done:exact:true`,
+    {
+      headers: { Authorization: "Bearer " + keycloak.token },
+    }
   );
   const [todos, setTodos] = useState<ITodo[]>([]);
 

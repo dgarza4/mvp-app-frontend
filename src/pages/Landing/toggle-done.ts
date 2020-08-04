@@ -1,6 +1,10 @@
 import { ITodo } from "interfaces";
 
-const toggleDone = (todo: ITodo, setStateTodo: (val: ITodo) => void) => {
+const toggleDone = (
+  todo: ITodo,
+  setStateTodo: (val: ITodo) => void,
+  token: string | undefined
+) => {
   if (!todo.id) {
     return;
   }
@@ -10,6 +14,7 @@ const toggleDone = (todo: ITodo, setStateTodo: (val: ITodo) => void) => {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
+      Authorization: "Bearer " + token,
     },
     body: JSON.stringify(value),
   })

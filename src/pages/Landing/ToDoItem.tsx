@@ -4,6 +4,7 @@ import { Checkbox, CheckboxSelected } from "grommet-icons";
 import ToDoForm from "components/ToDoForm";
 import { ITodo } from "interfaces";
 import toggleDone from "./toggle-done";
+import { useKeycloak } from "@react-keycloak/web";
 
 interface IToDoItemProps {
   todo: ITodo;
@@ -12,12 +13,13 @@ interface IToDoItemProps {
 const ToDoItem: FC<IToDoItemProps> = ({ todo }) => {
   const [stateTodo, setStateTodo] = useState<ITodo>(todo);
   const [isEditing, setIsEditing] = useState<boolean>(false);
+  const [keycloak] = useKeycloak();
 
   return (
     <Box flexDirection="row" cursor="pointer">
       <Box
         margin="20px 15px 20px 0"
-        onClick={() => toggleDone(stateTodo, setStateTodo)}
+        onClick={() => toggleDone(stateTodo, setStateTodo, keycloak.token)}
       >
         {stateTodo?.done ? <CheckboxSelected /> : <Checkbox />}
       </Box>
