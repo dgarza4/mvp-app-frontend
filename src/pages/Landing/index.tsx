@@ -11,7 +11,7 @@ import { IListResults, ITodo } from "interfaces";
 
 const Landing: FC = () => {
   const { data, isLoading, error } = fetchSingle<IListResults<ITodo>>(
-    `${config.apiUrl}/todos`
+    `${config.apiUrl}/todos?order=created_at:DESC&where=done:exact:true`
   );
   const [todos, setTodos] = useState<ITodo[]>([]);
 
