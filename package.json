@@ -16,9 +16,12 @@
   },
   "dependencies": {
     "@hookform/error-message": "^0.0.3",
+    "@react-keycloak/web": "^2.1.3",
     "fetch-hooks-react": "^0.0.1",
     "grommet-icons": "^4.4.0",
+    "keycloak-js": "^10.0.2",
     "polished": "^3.4.1",
+    "query-string": "^6.13.1",
     "react": "^16.13.1",
     "react-basic-blocks": "^0.0.3",
     "react-dom": "^16.13.1",
