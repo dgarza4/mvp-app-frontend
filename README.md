@@ -20,12 +20,11 @@ If you have a url at hand you can also [configure a cloudfront distribution to s
 
 You also need to configure cloudfront so that it returns something even if the path does not exist. Go to CloudFront and click the distribution you want to apply these SPA settings to. Click the Error Pages tab and add a new error page. Fill the form with these fields:
 
-* HTTP Error Code: 404
-* TTL: 0
-* Custom Error Response: Yes
-* Response Page Path: /index.html
-* HTTP Response Code: 200
-
+- HTTP Error Code: 404
+- TTL: 0
+- Custom Error Response: Yes
+- Response Page Path: /index.html
+- HTTP Response Code: 200
 
 ## Azure Pipelines
 
@@ -39,9 +38,36 @@ You can add a `title` and `description` tag to each individual page by using the
 
 `react-snap` will automatically pre-render all the reachable pages in the app after `yarn build` is run. It does so by using puppetteer to crawl the app and generate static HTML files that can be served directly from an s3 bucket via cloudfront.
 
-
 IMPORTANT: the react reconciliation algorithm has a hard time when components are conditionally rendered. What this means is that if your layout changes from mobile to desktop, you'd want to hide the component via css using `display: none;` as opposed to returning `null` when a component is not required. Also, avoid inline styles in favor of css so that a pre-rendered static page randered for mobile will work for desktop as well.
 
 ## Linting and Formatting
 
 Linting and formatting will take place right before each git commit via a husky pre-commit hook.
+
+## Tests
+
+### Cypress
+
+Open the UI:
+
+```sh
+CYPRESS_BASE_URL=http://localhost:3000 yarn run cy:open
+```
+
+Create the base images:
+
+```sh
+CYPRESS_BASE_URL=http://localhost:3000 yarn run cy:base
+```
+
+Run the test against the base images:
+
+```sh
+CYPRESS_BASE_URL=http://localhost:3000 yarn run cy:test
+```
+
+Generate report:
+
+```sh
+yarn run cy:report
+```

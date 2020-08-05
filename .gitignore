@@ -17,3 +17,9 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# Cypress.io
+cypress/reports/
+cypress/snapshots/actual/
+cypress/snapshots/diff/
+cypress/videos/
