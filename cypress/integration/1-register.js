@@ -31,7 +31,9 @@ describe("Registration form", () => {
 
   it("should register a new use and reach the main landing page", () => {
     cy.fixture("auth").then((fixture) => {
-      utils.screenSizes.forEach((screenSize) => {
+      // we perform registration only once
+      const screenSizes = [utils.screenSizes[0]];
+      screenSizes.forEach((screenSize) => {
         utils.setViewPortToScreenSize(screenSize);
 
         cy.clearCookies();
@@ -49,6 +51,10 @@ describe("Registration form", () => {
         cy.get("#password").type(fixture.password);
         cy.get("#password-confirm").type(fixture.password);
         cy.get("#kc-register-form").submit();
+
+        cy.location("pathname", {
+          timeout: 10000
+        }).should("be", "/");
 
         cy.get("span").contains(fixture.landing_page_header_text);
       });
