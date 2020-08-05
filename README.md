@@ -46,6 +46,14 @@ Linting and formatting will take place right before each git commit via a husky 
 
 ## Tests
 
+### Start Frontend Locally
+
+Remember to point the frontend to the right backend `address:port`:
+
+```sh
+REACT_APP_API_URL=http://localhost:13080/api/todo/v1 yarn start
+```
+
 ### Cypress
 
 Open the UI:
