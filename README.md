@@ -56,6 +56,15 @@ REACT_APP_API_URL=http://localhost:13080/api/todo/v1 yarn start
 
 ### Cypress
 
+Set any of the following environment variables, if defaults are not correct:
+
+```sh
+KEYCLOAK_BACKEND_AUTH_SERVER_URL='http://localhost:30080/auth'
+KEYCLOAK_REALM='mvpapp'
+KEYCLOAK_BACKEND_CLIENT='mvp-app-backend'
+KEYCLOAK_BACKEND_CREDENTIALS_SECRET='secret'
+```
+
 Open the UI:
 
 ```sh

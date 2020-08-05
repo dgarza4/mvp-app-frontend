@@ -31,12 +31,17 @@ describe("Registration form", () => {
 
   it("should register a new use and reach the main landing page", () => {
     cy.fixture("auth").then((fixture) => {
+      const keycloakHost = process.env.KEYCLOAK_BACKEND_AUTH_SERVER_URL || fixture.keycloak_host;
+      const keycloakRealm = process.env.KEYCLOAK_REALM || fixture.keycloak_realm;
+      const keycloakClient = process.env.KEYCLOAK_BACKEND_CLIENT || fixture.keycloak_client;
+      const keycloakClientSecret = process.env.KEYCLOAK_BACKEND_CREDENTIALS_SECRET || fixture.keycloak_client_secret;
+
       // we perform registration only once
       utils.screenSizes.forEach((screenSize) => {
         utils.setViewPortToScreenSize(screenSize);
 
         // delete use
-        cy.exec(`./cypress/scripts/delete_test_user.sh -H '${fixture.keycloak_host}' -R '${fixture.keycloak_realm}' -C '${fixture.keycloak_client}' -S '${fixture.keycloak_client_secret}' -u '${fixture.email}' -p '${fixture.password}'`, {
+        cy.exec(`./cypress/scripts/delete_test_user.sh -H '${keycloakHost}' -R '${keycloakRealm}' -C '${keycloakClient}' -S '${keycloakClientSecret}' -u '${fixture.email}' -p '${fixture.password}'`, {
           failOnNonZeroExit: false
         });
 
