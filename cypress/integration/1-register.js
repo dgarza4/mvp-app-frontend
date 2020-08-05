@@ -32,9 +32,13 @@ describe("Registration form", () => {
   it("should register a new use and reach the main landing page", () => {
     cy.fixture("auth").then((fixture) => {
       // we perform registration only once
-      const screenSizes = [utils.screenSizes[0]];
-      screenSizes.forEach((screenSize) => {
+      utils.screenSizes.forEach((screenSize) => {
         utils.setViewPortToScreenSize(screenSize);
+
+        // delete use
+        cy.exec(`./cypress/scripts/delete_test_user.sh -H '${fixture.keycloak_host}' -R '${fixture.keycloak_realm}' -C '${fixture.keycloak_client}' -S '${fixture.keycloak_client_secret}' -u '${fixture.email}' -p '${fixture.password}'`, {
+          failOnNonZeroExit: false
+        });
 
         cy.clearCookies();
         cy.visit("/");
