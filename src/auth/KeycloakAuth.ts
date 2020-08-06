@@ -1,4 +1,5 @@
 import Keycloak from "keycloak-js";
+import { config } from "config";
 
 function generateKeycloakInitOptions(): Keycloak.KeycloakInitOptions {
   const options: Keycloak.KeycloakInitOptions = {
@@ -9,9 +10,9 @@ function generateKeycloakInitOptions(): Keycloak.KeycloakInitOptions {
 }
 
 const keycloakConfig = {
-  realm: process.env.REACT__APP_AUTH__REALM || "mvpapp",
-  url: process.env.REACT_APP_AUTH_URL || "http://localhost:30080/auth/",
-  clientId: process.env.REACT_APP_AUTH_CLIENT_ID || "mvp-app-frontend",
+  realm: config.keycloakRealm,
+  url: config.keycloakUrl,
+  clientId: config.keycloakClientId,
 };
 
 export const keycloak: Keycloak.KeycloakInstance = Keycloak(keycloakConfig);

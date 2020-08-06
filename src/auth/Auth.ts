@@ -30,9 +30,9 @@ export class Auth {
     private useKeycloakLogin = false
   ) {
     this.keycloak = Keycloak({
-      realm: process.env.REACT_APP_KEYCLOAK_REALM || "mvpapp",
-      url: process.env.REACT_APP_KEYCLOAK_URL || "/auth/",
-      clientId: process.env.REACT_APP_KEYCLOAK_CLIENT_ID || "mvp-app-frontend",
+      realm: config.keycloakRealm,
+      url: config.keycloakUrl,
+      clientId: config.keycloakClientId,
     });
   }
 

@@ -1,4 +1,5 @@
 import { ITodo } from "interfaces";
+import { config } from "config";
 
 interface IData {
   [x: string]: any;
@@ -13,7 +14,7 @@ const onSubmit = (
 ) => {
   const { title } = data;
   if (title) {
-    const baseUrl = `${process.env.REACT_APP_API_URL}/todos`;
+    const baseUrl = `${config.apiUrl}/todos`;
     const url = todo.id ? `${baseUrl}/${todo.id}` : baseUrl;
     fetch(url, {
       method: todo.id ? "PUT" : "POST",

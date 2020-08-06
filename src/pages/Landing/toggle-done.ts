@@ -1,4 +1,5 @@
 import { ITodo } from "interfaces";
+import { config } from "config";
 
 const toggleDone = (
   todo: ITodo,
@@ -10,7 +11,7 @@ const toggleDone = (
   }
 
   const value = { ...todo, done: !todo.done };
-  fetch(`${process.env.REACT_APP_API_URL}/todos/${todo.id}`, {
+  fetch(`${config.apiUrl}/todos/${todo.id}`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
