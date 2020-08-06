@@ -65,6 +65,8 @@ describe("Registration form", () => {
           timeout: 10000
         }).should("be", "/");
 
+        cy.wait(3000);
+
         cy.get("span").contains(fixture.landing_page_header_text);
       });
     });

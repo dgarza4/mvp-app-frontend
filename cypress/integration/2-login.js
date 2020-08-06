@@ -50,6 +50,7 @@ describe("Login form", () => {
         cy.get("#password").type(fixture.password);
         cy.get("#kc-form-login").submit();
 
+        cy.wait(3000);
         cy.get("span").contains(fixture.landing_page_header_text);
       });
     });

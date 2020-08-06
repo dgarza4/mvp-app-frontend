@@ -32,7 +32,7 @@ stages:
               export REACT_APP_API_URL=https://mvp-app.cluster1.endvr-digital-dev.com/api/todo/v1
               export REACT_APP_KEYCLOAK_REALM=mvpapp
               export REACT_APP_KEYCLOAK_URL=https://keycloak.cluster1.endvr-digital-dev.com/auth
-              export REACT_APP_KEYCLOAK_CLIENT_ID=test-client
+              export REACT_APP_KEYCLOAK_CLIENT_ID=mvp-app-frontend
               yarn build-dev
               if [ $? -ne 0 ]; then
                   exit 1
