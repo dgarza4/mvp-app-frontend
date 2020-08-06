@@ -51,7 +51,11 @@ Linting and formatting will take place right before each git commit via a husky 
 Remember to point the frontend to the right backend `address:port`:
 
 ```sh
-REACT_APP_API_URL=http://localhost:13080/api/todo/v1 yarn start
+REACT_APP_API_URL=http://localhost:13080/api/todo/v1 \
+REACT_APP_KEYCLOAK_REALM=mvpapp \
+REACT_APP_KEYCLOAK_URL=http://localhost:30080/auth \
+REACT_APP_KEYCLOAK_CLIENT_ID=mvp-app-frontend \
+yarn start
 ```
 
 ### Cypress
