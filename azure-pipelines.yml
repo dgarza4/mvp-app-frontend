@@ -29,7 +29,7 @@ stages:
               fi
             displayName: 'yarn install'
           - script: |
-              export REACT_APP_API_URL=https://mvp-app.cluster1.endvr-digital-dev.co/api/todo/v1
+              export REACT_APP_API_URL=https://mvp-app.cluster1.endvr-digital-dev.com/api/todo/v1
               export REACT_APP_KEYCLOAK_REALM=mvpapp
               export REACT_APP_KEYCLOAK_URL=https://keycloak.cluster1.endvr-digital-dev.com/auth
               export REACT_APP_KEYCLOAK_CLIENT_ID=test-client
