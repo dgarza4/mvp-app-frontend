@@ -5,11 +5,10 @@
     "failSilently": false
   },
   "chromeWebSecurity": false,
-  "reporter": "mochawesome",
+  "reporter": "junit",
   "reporterOptions": {
-    "reportDir": "cypress/reports/tests",
-    "overwrite": false,
-    "html": false,
-    "json": true
+    "mochaFile": "cypress/reports/tests/test-output-[hash].xml",
+    "toConsole": true,
+    "attachments": true
   }
 }
