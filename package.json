@@ -5,6 +5,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "GENERATE_SOURCEMAP=false react-scripts build",
+    "build-dev": "react-scripts build",
     "format": "prettier --write \"src/**/*.{js,jsx,ts,tsx,css}\"",
     "lint": "eslint --ext .jsx,.js,.tsx,.ts src/",
     "lint-fix": "eslint --fix --ext .jsx,.js,.tsx,.ts src/",
