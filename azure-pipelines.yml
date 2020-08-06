@@ -28,7 +28,11 @@ stages:
                   exit 1
               fi
             displayName: 'yarn install'          
-          - script: |   
+          - script: |
+              export REACT_APP_API_URL=http://mvp-app.cluster1.endvr-digital-dev.co/api/todo/v1
+              export REACT_APP_KEYCLOAK_REALM=mvpapp
+              export REACT_APP_KEYCLOAK_URL=https://keycloak.cluster1.endvr-digital-dev.com/auth
+              export REACT_APP_KEYCLOAK_CLIENT_ID=test-client
               yarn build-dev
               if [ $? -ne 0 ]; then
                   exit 1
