@@ -1,3 +1,18 @@
+variables: 
+  - name: DEV_ENV_NAME
+    value: mvp-app-dev
+  - name: PROD_ENV_NAME
+    value: mvp-app-prod
+  - name: DEV_URL
+    value: https://mvp-app.cluster1.endvr-digital-dev.com
+  - name: PROD_URL
+    value: https://someurl.com
+  - name: DEV_S3_BUCKET_NAME
+    value: endvr-d-mvp-app
+  - name: PROD_S3_BUCKET_NAME
+    value: prod-bucket-name
+
+
 trigger:
 - master
 
@@ -6,8 +21,8 @@ trigger:
 #  displayName: Fifteen minute content build
 #  branches:
 #    include:
-#    - master
-#  always: true
+#    - master 
+#  always: true  
 
 pool:
   vmImage: 'ubuntu-latest'
@@ -29,9 +44,9 @@ stages:
               fi
             displayName: 'yarn install'
           - script: |
-              export REACT_APP_API_URL=https://mvp-app.cluster1.endvr-digital-dev.com/api/todo/v1
+              export REACT_APP_API_URL=$(DEV_URL)/api/todo/v1
+              export REACT_APP_KEYCLOAK_URL=$(DEV_URL)/auth
               export REACT_APP_KEYCLOAK_REALM=mvpapp
-              export REACT_APP_KEYCLOAK_URL=https://keycloak.cluster1.endvr-digital-dev.com/auth
               export REACT_APP_KEYCLOAK_CLIENT_ID=mvp-app-frontend
               yarn build-dev
               if [ $? -ne 0 ]; then
@@ -44,7 +59,7 @@ stages:
         displayName: "Deploy"
         pool:
           vmImage: 'ubuntu-latest'
-        environment: 'mvp-app-dev'
+        environment: $(DEV_ENV_NAME)
         strategy:
           runOnce:
             deploy:
@@ -56,16 +71,41 @@ stages:
                 inputs:
                   awsCredentials: 'CDP AWS Subscription'
                   regionName: 'us-east-2'
-                  bucketName: 'endvr-d-mvp-app'
+                  bucketName: $(DEV_S3_BUCKET_NAME)
                   sourceFolder: '$(Pipeline.Workspace)/StagingWebApp'
                   globExpressions: '**'
                   filesAcl: 'public-read'
+      - job: Cypress
+        dependsOn: StagingDeploy
+        steps:
+          - script: |
+              yarn
+              if [ $? -ne 0 ]; then
+                  exit 1
+              fi
+            displayName: 'yarn install'          
+          - script: |
+              export CYPRESS_BASE_URL=$(DEV_URL)
+              yarn run cy:test
+              yarn run cy:merge
+              if [ $? -ne 0 ]; then
+                  exit 1
+              fi
+            displayName: 'yarn run cy:test'          
+          - task: PublishTestResults@2
+            inputs:
+              testResultsFormat: 'JUnit'
+              testResultsFiles: '**/reports/merged.xml' 
+              mergeTestResults: true
+              failTaskOnFailedTests: false
+              testRunTitle: Cypress Test Results
+              publishRunAttachments: true
       - job: Lighthouse
         dependsOn: StagingDeploy
         steps:
           - task: Lighthouse@1
             inputs:
-              url: 'https://mvp-app.cluster1.endvr-digital-dev.com/'
+              url: $(DEV_URL)
               args: '--quiet'
               assertions: |
                 no-vulnerable-libraries = 1
@@ -88,20 +128,20 @@ stages:
   #             if [ $? -ne 0 ]; then
   #                 exit 1
   #             fi
-  #           displayName: 'yarn install'
-  #         - script: |
+  #           displayName: 'yarn install'          
+  #         - script: |   
   #             yarn build
   #             if [ $? -ne 0 ]; then
   #                 exit 1
-  #             fi
-  #           displayName: 'Build deployable package'
+  #             fi  
+  #           displayName: 'Build deployable package'                    
   #         - publish: $(Build.Repository.LocalPath)/build
   #           artifact: ProductionWebApp
   #     - deployment: ProductionDeploy
   #       displayName: "Deploy"
-  #       pool:
+  #       pool: 
   #         vmImage: 'ubuntu-latest'
-  #       environment: 'mvp-app-prod'
+  #       environment: $(PROD_ENV_NAME)
   #       strategy:
   #         runOnce:
   #           deploy:
@@ -113,9 +153,9 @@ stages:
   #               inputs:
   #                 awsCredentials: 'CDP AWS Subscription'
   #                 regionName: 'us-west-2'
-  #                 bucketName: 'endeavor-speakers'
+  #                 bucketName: $(PROD_S3_BUCKET_NAME)
   #                 sourceFolder: '$(Pipeline.Workspace)/ProductionWebApp'
-  #                 globExpressions: '**'
+  #                 globExpressions: '**'          
   #                 filesAcl: 'public-read'
   #             - task: AWSCLI@1
   #               displayName: 'Invalidate CDN caching of index.html'
@@ -123,14 +163,39 @@ stages:
   #                 awsCredentials: 'CDP AWS Subscription'
   #                 regionName: 'us-west-2'
   #                 awsCommand: 'cloudfront'
-  #                 awsSubCommand: 'create-invalidation'
+  #                 awsSubCommand: 'create-invalidation'   
   #                 awsArguments: '--distribution-id ELPJK0DT806PY --paths "/index.html"'
+  #     - job: Cypress
+  #       dependsOn: StagingDeploy
+  #       steps:
+  #         - script: |
+  #             yarn
+  #             if [ $? -ne 0 ]; then
+  #                 exit 1
+  #             fi
+  #           displayName: 'yarn install'          
+  #         - script: |
+  #             export CYPRESS_BASE_URL=$(PROD_URL)
+  #             yarn run cy:test
+  #             yarn run cy:merge
+  #             if [ $? -ne 0 ]; then
+  #                 exit 1
+  #             fi
+  #           displayName: 'yarn run cy:test'          
+  #         - task: PublishTestResults@2
+  #           inputs:
+  #             testResultsFormat: 'JUnit'
+  #             testResultsFiles: '**/reports/merged.xml' 
+  #             mergeTestResults: true
+  #             failTaskOnFailedTests: false
+  #             testRunTitle: Cypress Test Results
+  #             publishRunAttachments: true
   #     - job: Lighthouse
   #       dependsOn: ProductionDeploy
   #       steps:
   #         - task: Lighthouse@1
   #           inputs:
-  #             url: 'CHANGE_PROD_URL'
+  #             url: $(PROD_URL)
   #             args: '--quiet'
   #             assertions: |
   #               no-vulnerable-libraries = 1
