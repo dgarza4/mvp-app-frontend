@@ -6,14 +6,14 @@ trigger:
 #  displayName: Fifteen minute content build
 #  branches:
 #    include:
-#    - master 
-#  always: true  
+#    - master
+#  always: true
 
 pool:
   vmImage: 'ubuntu-latest'
 
 stages:
-  - stage: StagingDeploy  
+  - stage: StagingDeploy
     displayName: "Deploy To Staging"
     jobs:
       - job: Build
@@ -27,22 +27,22 @@ stages:
               if [ $? -ne 0 ]; then
                   exit 1
               fi
-            displayName: 'yarn install'          
+            displayName: 'yarn install'
           - script: |
-              export REACT_APP_API_URL=http://mvp-app.cluster1.endvr-digital-dev.co/api/todo/v1
+              export REACT_APP_API_URL=https://mvp-app.cluster1.endvr-digital-dev.co/api/todo/v1
               export REACT_APP_KEYCLOAK_REALM=mvpapp
               export REACT_APP_KEYCLOAK_URL=https://keycloak.cluster1.endvr-digital-dev.com/auth
               export REACT_APP_KEYCLOAK_CLIENT_ID=test-client
               yarn build-dev
               if [ $? -ne 0 ]; then
                   exit 1
-              fi  
-            displayName: 'Build deployable package'            
+              fi
+            displayName: 'Build deployable package'
           - publish: $(Build.Repository.LocalPath)/build
             artifact: StagingWebApp
       - deployment: StagingDeploy
         displayName: "Deploy"
-        pool: 
+        pool:
           vmImage: 'ubuntu-latest'
         environment: 'mvp-app-dev'
         strategy:
@@ -58,7 +58,7 @@ stages:
                   regionName: 'us-east-2'
                   bucketName: 'endvr-d-mvp-app'
                   sourceFolder: '$(Pipeline.Workspace)/StagingWebApp'
-                  globExpressions: '**'                              
+                  globExpressions: '**'
                   filesAcl: 'public-read'
       - job: Lighthouse
         dependsOn: StagingDeploy
@@ -71,8 +71,8 @@ stages:
                 no-vulnerable-libraries = 1
                 robots-txt = 1
                 speed-index > 0.5
-  
-  # - stage: ProductionDeploy  
+
+  # - stage: ProductionDeploy
   #   displayName: "Deploy To Production"
   #   dependsOn:
   #     - StagingDeploy
@@ -88,18 +88,18 @@ stages:
   #             if [ $? -ne 0 ]; then
   #                 exit 1
   #             fi
-  #           displayName: 'yarn install'          
-  #         - script: |   
+  #           displayName: 'yarn install'
+  #         - script: |
   #             yarn build
   #             if [ $? -ne 0 ]; then
   #                 exit 1
-  #             fi  
-  #           displayName: 'Build deployable package'                    
+  #             fi
+  #           displayName: 'Build deployable package'
   #         - publish: $(Build.Repository.LocalPath)/build
   #           artifact: ProductionWebApp
   #     - deployment: ProductionDeploy
   #       displayName: "Deploy"
-  #       pool: 
+  #       pool:
   #         vmImage: 'ubuntu-latest'
   #       environment: 'mvp-app-prod'
   #       strategy:
@@ -115,7 +115,7 @@ stages:
   #                 regionName: 'us-west-2'
   #                 bucketName: 'endeavor-speakers'
   #                 sourceFolder: '$(Pipeline.Workspace)/ProductionWebApp'
-  #                 globExpressions: '**'          
+  #                 globExpressions: '**'
   #                 filesAcl: 'public-read'
   #             - task: AWSCLI@1
   #               displayName: 'Invalidate CDN caching of index.html'
@@ -123,7 +123,7 @@ stages:
   #                 awsCredentials: 'CDP AWS Subscription'
   #                 regionName: 'us-west-2'
   #                 awsCommand: 'cloudfront'
-  #                 awsSubCommand: 'create-invalidation'   
+  #                 awsSubCommand: 'create-invalidation'
   #                 awsArguments: '--distribution-id ELPJK0DT806PY --paths "/index.html"'
   #     - job: Lighthouse
   #       dependsOn: ProductionDeploy
