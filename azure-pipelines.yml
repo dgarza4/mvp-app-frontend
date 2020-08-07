@@ -1,8 +1,7 @@
 variables: 
+  # DEV
   - name: DEV_ENV_NAME
     value: mvp-app-dev
-  - name: PROD_ENV_NAME
-    value: mvp-app-prod
   - name: DEV_URL
     value: https://mvp-app.cluster1.endvr-digital-dev.com
   - name: DEV_KEYCLOAK_URL
@@ -11,6 +10,11 @@ variables:
     value: mvpapp
   - name: DEV_KEYCLOAK_CLIENT_ID
     value: mvp-app-frontend
+  - name: DEV_S3_BUCKET_NAME
+    value: endvr-d-mvp-app
+  # PROD
+  - name: PROD_ENV_NAME
+    value: mvp-app-prod
   - name: PROD_URL
     value: https://someurl.com
   - name: PROD_KEYCLOAK_URL
@@ -19,8 +23,6 @@ variables:
     value: prodrealm
   - name: PROD_KEYCLOAK_CLIENT_ID
     value: prod-kc-client-id
-  - name: DEV_S3_BUCKET_NAME
-    value: endvr-d-mvp-app
   - name: PROD_S3_BUCKET_NAME
     value: prod-bucket-name
 
