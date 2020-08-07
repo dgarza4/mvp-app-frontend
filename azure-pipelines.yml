@@ -5,8 +5,20 @@ variables:
     value: mvp-app-prod
   - name: DEV_URL
     value: https://mvp-app.cluster1.endvr-digital-dev.com
+  - name: DEV_KEYCLOAK_URL
+    value: https://keycloak.cluster1.endvr-digital-dev.com/auth
+  - name: DEV_KEYCLOAK_REALM
+    value: mvpapp
+  - name: DEV_KEYCLOAK_CLIENT_ID
+    value: mvp-app-frontend
   - name: PROD_URL
     value: https://someurl.com
+  - name: PROD_KEYCLOAK_URL
+    value: https://somekeycloakurl.com/auth
+  - name: PROD_KEYCLOAK_REALM
+    value: prodrealm
+  - name: PROD_KEYCLOAK_CLIENT_ID
+    value: prod-kc-client-id
   - name: DEV_S3_BUCKET_NAME
     value: endvr-d-mvp-app
   - name: PROD_S3_BUCKET_NAME
@@ -45,9 +57,9 @@ stages:
             displayName: 'yarn install'
           - script: |
               export REACT_APP_API_URL=$(DEV_URL)/api/todo/v1
-              export REACT_APP_KEYCLOAK_URL=$(DEV_URL)/auth
-              export REACT_APP_KEYCLOAK_REALM=mvpapp
-              export REACT_APP_KEYCLOAK_CLIENT_ID=mvp-app-frontend
+              export REACT_APP_KEYCLOAK_URL=$(DEV_KEYCLOAK_URL)
+              export REACT_APP_KEYCLOAK_REALM=$(DEV_KEYCLOAK_REALM)
+              export REACT_APP_KEYCLOAK_CLIENT_ID=$(DEV_KEYCLOAK_CLIENT_ID)
               yarn build-dev
               if [ $? -ne 0 ]; then
                   exit 1
@@ -130,6 +142,10 @@ stages:
   #             fi
   #           displayName: 'yarn install'          
   #         - script: |   
+  #             export REACT_APP_API_URL=$(PROD_URL)/api/todo/v1
+  #             export REACT_APP_KEYCLOAK_URL=$(PROD_KEYCLOAK_URL)
+  #             export REACT_APP_KEYCLOAK_REALM=$(PROD_KEYCLOAK_REALM)
+  #             export REACT_APP_KEYCLOAK_CLIENT_ID=$(PROD_KEYCLOAK_CLIENT_ID)
   #             yarn build
   #             if [ $? -ne 0 ]; then
   #                 exit 1
