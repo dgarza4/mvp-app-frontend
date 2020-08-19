@@ -1,0 +1,24 @@
+FROM node:12-alpine as builder
+
+WORKDIR /app/
+
+ENV NODE_ENV=dev
+
+COPY package.json ./
+COPY tsconfig.json ./
+COPY yarn.lock ./
+COPY codegen.yml ./
+COPY ./src ./src
+COPY ./public ./public
+RUN yarn config delete proxy && yarn config delete https-proxy && yarn --network-timeout 100000
+
+LABEL org.opencontainers.image.url="https://dev.azure.com/endeavor-digital/Technology%20Infrastructure/_git/mvp-app-frontend?path=%2FREADME.md"
+LABEL org.opencontainers.image.source="https://dev.azure.com/endeavor-digital/Technology%20Infrastructure/_git/mvp-app-frontend"
+LABEL org.opencontainers.image.vendor="Endeavor"
+LABEL org.opencontainers.image.title="Endeavor MVP App Frontend"
+
+ENV REACT_APP_KEYCLOAK_URL=https://keycloak.endvr/auth
+
+EXPOSE 3000/tcp
+
+ENTRYPOINT ["yarn", "start"]

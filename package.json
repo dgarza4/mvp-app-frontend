@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "start": "react-scripts start",
+    "start-dev-k8s": "yarn start",
     "build": "GENERATE_SOURCEMAP=false react-scripts build",
     "build-dev": "react-scripts build",
     "format": "prettier --write \"src/**/*.{js,jsx,ts,tsx,css}\"",
