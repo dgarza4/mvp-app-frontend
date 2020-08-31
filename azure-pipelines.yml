@@ -184,7 +184,7 @@ stages:
                   awsSubCommand: 'create-invalidation'   
                   awsArguments: '--distribution-id ELPJK0DT806PY --paths "/index.html"'
       - job: Cypress
-        dependsOn: StagingDeploy
+        dependsOn: ProductionDeploy
         steps:
           - script: |
               yarn
