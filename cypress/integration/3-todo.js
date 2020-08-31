@@ -5,11 +5,17 @@ describe("Todo landing page", () => {
   before(() => {
     cy.fixture("auth").then((fixture) => {
       cy.clearCookies();
-      cy.visit("/");
+      cy.clearLocalStorage();
+      cy.visit("/auth/signin");
 
-      cy.get("#username").type(fixture.email);
-      cy.get("#password").type(fixture.password);
-      cy.get("#kc-form-login").submit();
+      cy.get("[data-test=sign-in-username-input]", { includeShadowDom: true }).type(fixture.email);
+      cy.get("[data-test=sign-in-password-input]", { includeShadowDom: true }).type(fixture.password);
+      cy.get("[data-test=sign-in-sign-in-button]", { includeShadowDom: true }).first().click();
+
+      cy.location("pathname", {
+        timeout: 10000
+      }).should("be", "/");
+      cy.wait(1500);
     });
   });
 

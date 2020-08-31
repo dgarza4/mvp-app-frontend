@@ -1,8 +1,9 @@
 import React, { FC } from "react";
-import { LogoLink, Wrapper } from "./styles";
+import { LogoLink, Wrapper, LogoutWrapper } from "./styles";
 import { Box } from "react-basic-blocks";
-import { CircleQuestion, UserSettings, Cloud } from "grommet-icons";
+import { CircleQuestion, UserSettings, Cloud, Logout } from "grommet-icons";
 import colors from "styles/colors";
+import { signOut } from "components/CognitoAuth";
 
 const AppHeader: FC = () => {
   return (
@@ -22,6 +23,9 @@ const AppHeader: FC = () => {
         <LogoLink to="/help">
           <CircleQuestion />
         </LogoLink>
+        <LogoutWrapper onClick={signOut}>
+          <Logout />
+        </LogoutWrapper>
       </Box>
     </Wrapper>
   );

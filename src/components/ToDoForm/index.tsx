@@ -4,7 +4,7 @@ import { ErrorMessage } from "@hookform/error-message";
 import { StyledError, StyledInput, StyledForm } from "./styles";
 import { ITodo } from "interfaces";
 import onSubmit from "./on-submit";
-import { useKeycloak } from "@react-keycloak/web";
+import { GetJwt } from "components/CognitoAuth";
 
 interface IProps {
   todo: ITodo;
@@ -13,10 +13,10 @@ interface IProps {
 }
 
 const ToDoForm: FC<IProps> = ({ todo, setIsEditing, setStateTodo }) => {
-  const [keycloak] = useKeycloak();
+  const jwt = GetJwt();
   const { register, handleSubmit, errors } = useForm();
   const submitFn = handleSubmit((data) =>
-    onSubmit(data, todo, setStateTodo, setIsEditing, keycloak.token)
+    onSubmit(data, todo, setStateTodo, setIsEditing, jwt)
   );
 
   return (

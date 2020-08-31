@@ -2,11 +2,7 @@ import "cypress-iframe";
 import utils from "../support/utils";
 
 describe("Login form", () => {
-  beforeEach(() => {
-    cy.clearCookies();
-  });
-
-  it("should be loaded in the main page", () => {
+  it("should be reached from the landing page", () => {
     cy.fixture("auth").then((fixture) => {
       utils.screenSizes.forEach((screenSize) => {
         utils.setViewPortToScreenSize(screenSize);
@@ -14,44 +10,65 @@ describe("Login form", () => {
         cy.clearCookies();
         cy.visit("/");
 
-        cy.get("#username");
-        cy.get("#password");
-        cy.get("#kc-login");
-        cy.get("a").should("have.text", fixture.register_text);
+        cy.get("[data-test=sign-up]");
+        cy.get("[data-test=sign-in]").click();
+
+        cy.location("pathname", {
+          timeout: 10000
+        }).should("include", fixture.login_url);
+
+
+        cy.get("#username", { includeShadowDom: true });
+        cy.get("#password", { includeShadowDom: true });
+        cy.get("[data-test=sign-in-sign-in-button]", { includeShadowDom: true });
+        cy.get("[data-test=sign-in-create-account-link]", { includeShadowDom: true });
       });
     });
   });
 
-  it("should display an error if wrong username and password are provided", () => {
+  it("should be reached from the signup page", () => {
     cy.fixture("auth").then((fixture) => {
       utils.screenSizes.forEach((screenSize) => {
         utils.setViewPortToScreenSize(screenSize);
 
         cy.clearCookies();
-        cy.visit("/");
+        cy.visit("/auth/signup");
 
-        cy.get("#username").type("wrong@user.com");
-        cy.get("#password").type("wrong password");
-        cy.get("#kc-form-login").submit();
-        cy.get(".kc-feedback-text").should("have.text", fixture.invalid_login_text);
+        cy.get("#email", { includeShadowDom: true });
+        cy.get("#password", { includeShadowDom: true });
+        cy.get("[data-test=sign-up-create-account-button]", { includeShadowDom: true });
+        cy.get("amplify-sign-up").find("[data-test=sign-up-sign-in-link]", { includeShadowDom: true }).click();
+
+        cy.wait(500);
+
+        cy.get("[data-test=sign-in-username-input]", { includeShadowDom: true });
+        cy.get("[data-test=sign-in-password-input]", { includeShadowDom: true });
+        cy.get("[data-test=sign-in-sign-in-button]", { includeShadowDom: true });
+        cy.get("[data-test=sign-in-create-account-link]", { includeShadowDom: true });
       });
     });
   });
 
-  it("should login and display the landing page", () => {
+  it("should register a new use and reach the main landing page", () => {
     cy.fixture("auth").then((fixture) => {
+      // we perform registration only once
       utils.screenSizes.forEach((screenSize) => {
         utils.setViewPortToScreenSize(screenSize);
 
+
         cy.clearCookies();
-        cy.visit("/");
+        cy.clearLocalStorage();
+        cy.visit("/auth/signin");
 
-        cy.get("#username").type(fixture.email);
-        cy.get("#password").type(fixture.password);
-        cy.get("#kc-form-login").submit();
+        cy.get("[data-test=sign-in-username-input]", { includeShadowDom: true }).type(fixture.email);
+        cy.get("[data-test=sign-in-password-input]", { includeShadowDom: true }).type(fixture.password);
+        cy.get("[data-test=sign-in-sign-in-button]", { includeShadowDom: true }).first().click();
 
-        cy.wait(3000);
-        cy.get("span").contains(fixture.landing_page_header_text);
+        cy.location("pathname", {
+          timeout: 10000
+        }).should("be", "/");
+
+        cy.contains(fixture.landing_page_header_text);
       });
     });
   });

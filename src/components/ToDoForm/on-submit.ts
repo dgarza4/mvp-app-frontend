@@ -12,6 +12,10 @@ const onSubmit = (
   setIsEditing: (val: boolean) => void,
   token: string | undefined
 ) => {
+  if (!token) {
+    return;
+  }
+
   const { title } = data;
   if (title) {
     const baseUrl = `${config.apiUrl}/todos`;

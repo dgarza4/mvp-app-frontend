@@ -3,22 +3,16 @@ import { render, hydrate } from "react-dom";
 import { BrowserRouter as Router } from "react-router-dom";
 import GlobalStyles from "styles/global-styles";
 import App from "App";
-import { KeycloakProvider } from "@react-keycloak/web";
-import { keycloak, keycloakProviderInitConfig } from "./auth/KeycloakAuth";
+import { AuthProvider } from "components/CognitoAuth";
 
 const FullApp = () => {
   return (
-    <KeycloakProvider
-      keycloak={keycloak}
-      initConfig={keycloakProviderInitConfig}
-      // onEvent={onKeycloakEvent}
-      // onTokens={onKeycloakTokens}
-    >
+    <AuthProvider>
       <Router>
         <GlobalStyles />
         <App />
       </Router>
-    </KeycloakProvider>
+    </AuthProvider>
   );
 };
 

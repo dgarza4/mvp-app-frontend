@@ -1,14 +1,15 @@
-import React, { ReactElement } from "react";
+import React, { FC, useContext } from "react";
 import styled from "styled-components/macro";
 import { Box } from "react-basic-blocks";
-import { Route, Switch } from "react-router";
+import { Route, Switch, Redirect } from "react-router";
 import AppHeader from "components/AppHeader";
 import Settings from "pages/Settings";
-import Landing from "pages/Landing";
+import Home from "pages/Home";
 import Footer from "components/Footer";
 import Help from "pages/Help";
-
-import { useKeycloak } from "@react-keycloak/web";
+import { AuthContext } from "components/CognitoAuth";
+import Landing from "pages/Landing";
+import Authentication from "pages/Authentication";
 
 const Wrapper = styled.div`
   display: flex;
@@ -26,29 +27,38 @@ const Wrapper = styled.div`
   }
 `;
 
-const App = (): ReactElement => {
-  const [keycloak, initialized] = useKeycloak();
-
+const ProtectedApp: FC = () => {
   return (
-    <>
-      {initialized && keycloak.authenticated ? (
-        <Wrapper>
-          <AppHeader />
-          <div className="max-width-container">
-            <Switch>
-              <Route path="/help" component={Help} exact />
-              <Route path="/settings" component={Settings} exact />
-              <Route path="/" component={Landing} exact />
+    <Wrapper>
+      <AppHeader />
+      <div className="max-width-container">
+        <Switch>
+          <Route path="/help" component={Help} exact />
+          <Route path="/settings" component={Settings} exact />
+          <Route path="/" component={Home} exact />
 
-              <Route render={() => <Box padding="20px">Not found</Box>} />
-            </Switch>
-          </div>
-          <Footer />
-        </Wrapper>
-      ) : (
-        ""
-      )}
-    </>
+          <Route render={() => <Box padding="20px">Not found</Box>} />
+        </Switch>
+      </div>
+      <Footer />
+    </Wrapper>
+  );
+};
+
+const App: FC = () => {
+  const { isSignedIn } = useContext(AuthContext);
+  return (
+    <Switch>
+      <Route
+        path="/auth"
+        render={() => (isSignedIn ? <Redirect to="/" /> : <Authentication />)}
+      />
+      <Route
+        path="/"
+        render={() => (isSignedIn ? <ProtectedApp /> : <Landing />)}
+      />
+      <Route render={() => <Box padding="20px">Not found</Box>} />
+    </Switch>
   );
 };
 

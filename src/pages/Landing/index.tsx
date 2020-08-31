@@ -1,62 +1,28 @@
-import React, { FC, useEffect, useState } from "react";
-import { Box, Text } from "react-basic-blocks";
+import React, { FC } from "react";
 import HeaderTags from "components/HeaderTags";
-import { fetchSingle } from "fetch-hooks-react";
-import Loader from "components/Loader";
-import ErrorNotice from "components/ErrorNotice";
-import ToDoItem from "./ToDoItem";
-import { config } from "config";
-import { Add, Checkmark } from "grommet-icons";
-import { IListResults, ITodo } from "interfaces";
-import { useKeycloak } from "@react-keycloak/web";
+import Hero from "./Hero";
+import Features from "./Features";
+import About from "./About";
+import Team from "./Team";
+import Footer from "components/Footer";
+import Clients from "./Clients";
+import AppHeader from "./AppHeader";
 
 const Landing: FC = () => {
-  const [keycloak] = useKeycloak();
-  const { data, isLoading, error } = fetchSingle<IListResults<ITodo>>(
-    `${config.apiUrl}/todos?order=created_at:DESC&where=done:exact:true`,
-    {
-      headers: { Authorization: "Bearer " + keycloak.token },
-    }
-  );
-  const [todos, setTodos] = useState<ITodo[]>([]);
-
-  useEffect(() => {
-    setTodos(data?.data || []);
-  }, [data]);
-
-  if (isLoading) {
-    return <Loader />;
-  } else if (error || !data) {
-    return <ErrorNotice />;
-  }
-
   return (
     <>
+      <AppHeader />
       <HeaderTags title="Landing" description="This is the landing page" />
-      <Box margin="20px">
-        <Box
-          flexDirection="row"
-          justifyContent="space-between"
-          alignItems="center"
-        >
-          <Text fontSize="32px">TO DOs </Text>
-          <Box
-            cursor="pointer"
-            onClick={() => setTodos([{} as ITodo, ...todos])}
-          >
-            <Add />
-          </Box>
-        </Box>
-        {todos.map((todo, i) => (
-          <ToDoItem key={`todo-${todo.id}-${i}`} todo={todo} />
-        ))}
-        {todos.length === 0 ? (
-          <Box width="100%" alignItems="center" margin="50px 0">
-            <Checkmark size="100px" color="green" />
-            <Text fontSize="32px">All Done!</Text>
-          </Box>
-        ) : null}
-      </Box>
+      <Hero
+        title="UI Kit"
+        description="The UI Kit is a React.js starter app that has SEO, Authentication, Basic Components, and more built into it. Get an app up and running in a couple of minutes!"
+        cta="Learn More"
+      />
+      <Features />
+      <Clients />
+      <About />
+      <Team />
+      <Footer />
     </>
   );
 };

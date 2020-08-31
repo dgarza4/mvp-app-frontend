@@ -2,72 +2,75 @@ import "cypress-iframe";
 import utils from "../support/utils";
 
 describe("Registration form", () => {
+  it("should be reached from the landing page", () => {
+    cy.fixture("auth").then((fixture) => {
+      utils.screenSizes.forEach((screenSize) => {
+        utils.setViewPortToScreenSize(screenSize);
+
+        cy.clearCookies();
+        cy.visit("/");
+
+        cy.get("[data-test=sign-in]");
+        cy.get("[data-test=sign-up]").click();
+
+        cy.location("pathname", {
+          timeout: 10000
+        }).should("include", fixture.registration_url);
+
+        cy.get("#email", { includeShadowDom: true });
+        cy.get("#password", { includeShadowDom: true });
+        cy.get("[data-test=sign-up-create-account-button]", { includeShadowDom: true });
+        cy.get("[data-test=sign-up-sign-in-link]", { includeShadowDom: true });
+      });
+    });
+  });
+
   it("should be reached from the login page", () => {
     cy.fixture("auth").then((fixture) => {
       utils.screenSizes.forEach((screenSize) => {
         utils.setViewPortToScreenSize(screenSize);
 
         cy.clearCookies();
-        cy.visit("/");
+        cy.visit("/auth/signin");
 
-        cy.get("#username");
-        cy.get("#password");
-        cy.get("#kc-login");
-        cy.get("a").click();
+        cy.get("#username", { includeShadowDom: true });
+        cy.get("#password", { includeShadowDom: true });
+        cy.get("[data-test=sign-in-sign-in-button]", { includeShadowDom: true });
+        cy.get("[data-test=sign-in-create-account-link]", { includeShadowDom: true }).click();
 
-        cy.location("pathname", {
-          timeout: 10000
-        }).should("include", fixture.registration_url);
+        cy.wait(500);
 
-        cy.get("#firstName");
-        cy.get("#lastName");
-        cy.get("#email");
-        cy.get("#password");
-        cy.get("#password-confirm");
-        cy.get(".btn");
+        cy.get("#email", { includeShadowDom: true });
+        cy.get("#password", { includeShadowDom: true });
+        cy.get("[data-test=sign-up-create-account-button]", { includeShadowDom: true });
+        cy.get("[data-test=sign-up-sign-in-link]", { includeShadowDom: true });
       });
     });
   });
 
   it("should register a new use and reach the main landing page", () => {
     cy.fixture("auth").then((fixture) => {
-      const keycloakHost = process.env.KEYCLOAK_BACKEND_AUTH_SERVER_URL || fixture.keycloak_host;
-      const keycloakRealm = process.env.KEYCLOAK_REALM || fixture.keycloak_realm;
-      const keycloakClient = process.env.KEYCLOAK_BACKEND_CLIENT || fixture.keycloak_client;
-      const keycloakClientSecret = process.env.KEYCLOAK_BACKEND_CREDENTIALS_SECRET || fixture.keycloak_client_secret;
-
       // we perform registration only once
       utils.screenSizes.forEach((screenSize) => {
         utils.setViewPortToScreenSize(screenSize);
 
-        // delete use
-        cy.exec(`./cypress/scripts/delete_test_user.sh -H '${keycloakHost}' -R '${keycloakRealm}' -C '${keycloakClient}' -S '${keycloakClientSecret}' -u '${fixture.email}' -p '${fixture.password}'`, {
-          failOnNonZeroExit: false
-        });
+
+        const email = `${Math.random().toString(36).substring(7)}@example.com`;
+
 
         cy.clearCookies();
-        cy.visit("/");
+        cy.clearLocalStorage();
+        cy.visit("/auth/signup");
 
-        cy.get("a").click();
-
-        cy.location("pathname", {
-          timeout: 10000
-        }).should("include", fixture.registration_url);
-
-        cy.get("#firstName").type(fixture.first_name);
-        cy.get("#lastName").type(fixture.last_name);
-        cy.get("#email").type(fixture.email);
-        cy.get("#password").type(fixture.password);
-        cy.get("#password-confirm").type(fixture.password);
-        cy.get("#kc-register-form").submit();
+        cy.get("amplify-sign-up").find("#email", { includeShadowDom: true }).type(email);
+        cy.get("amplify-sign-up").find("#password", { includeShadowDom: true }).type(fixture.password);
+        cy.get("amplify-sign-up").find("[data-test=sign-up-create-account-button]", { includeShadowDom: true }).click();
 
         cy.location("pathname", {
           timeout: 10000
         }).should("be", "/");
 
-        cy.wait(3000);
-
-        cy.get("span").contains(fixture.landing_page_header_text);
+        cy.contains(fixture.landing_page_header_text);
       });
     });
   });

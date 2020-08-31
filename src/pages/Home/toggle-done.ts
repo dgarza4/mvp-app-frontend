@@ -6,7 +6,7 @@ const toggleDone = (
   setStateTodo: (val: ITodo) => void,
   token: string | undefined
 ) => {
-  if (!todo.id) {
+  if (!todo.id || !token) {
     return;
   }
 

@@ -6,6 +6,7 @@
   },
   "chromeWebSecurity": false,
   "reporter": "junit",
+  "experimentalShadowDomSupport": true,
   "reporterOptions": {
     "mochaFile": "cypress/reports/tests/test-output-[hash].xml",
     "toConsole": true,

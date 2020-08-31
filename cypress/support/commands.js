@@ -25,7 +25,7 @@
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
 
 import 'cypress-wait-until';
-import "cypress-keycloak-commands";
+import 'cypress-shadow-dom';
 
 const compareSnapshotCommand = require("cypress-visual-regression/dist/command");
 

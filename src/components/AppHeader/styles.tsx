@@ -16,3 +16,8 @@ export const LogoLink = styled(NavLink)`
   text-decoration: none;
   padding-left: 24px;
 `;
+
+export const LogoutWrapper = styled.div`
+  padding-left: 24px;
+  cursor: pointer;
+`;
