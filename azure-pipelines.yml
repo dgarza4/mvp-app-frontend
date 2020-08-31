@@ -5,7 +5,7 @@ variables:
   - name: DEV_URL
     value: https://appname.cluster1.endvr-digital-dev.com
   - name: DEV_S3_BUCKET_NAME
-    value: dev-bucket-name
+    value:  endvr-d-mvp-app
   - name: DEV_COGNITO_REGION
     value: us-west-2
   - name: DEV_COGNITO_POOL_ID
