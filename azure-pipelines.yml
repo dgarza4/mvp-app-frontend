@@ -3,7 +3,7 @@ variables:
   - name: DEV_ENV_NAME
     value: dev-env-name
   - name: DEV_URL
-    value: https://appname.cluster1.endvr-digital-dev.com
+    value: http://mvp-app.cluster1.endvr-digital-dev.com/
   - name: DEV_S3_BUCKET_NAME
     value:  endvr-d-mvp-app
   - name: DEV_COGNITO_REGION
