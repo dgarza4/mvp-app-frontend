@@ -1,10 +1,10 @@
-import React, { FC } from "react";
+import React, { FC, useContext } from "react";
 import { useForm } from "react-hook-form";
 import { ErrorMessage } from "@hookform/error-message";
 import { StyledError, StyledInput, StyledForm } from "./styles";
 import { ITodo } from "interfaces";
 import onSubmit from "./on-submit";
-import { GetJwt } from "components/CognitoAuth";
+import { AuthContext } from "components/CognitoAuth";
 
 interface IProps {
   todo: ITodo;
@@ -13,7 +13,7 @@ interface IProps {
 }
 
 const ToDoForm: FC<IProps> = ({ todo, setIsEditing, setStateTodo }) => {
-  const jwt = GetJwt();
+  const { jwt } = useContext(AuthContext);
   const { register, handleSubmit, errors } = useForm();
   const submitFn = handleSubmit((data) =>
     onSubmit(data, todo, setStateTodo, setIsEditing, jwt)

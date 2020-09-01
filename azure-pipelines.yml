@@ -58,7 +58,7 @@ stages:
               fi
             displayName: 'yarn install'
           - script: |
-              export REACT_APP_API_URL=$(DEV_URL)/api/todo/v1
+              export REACT_APP_API_URL=$(DEV_URL)/api
               export REACT_APP_COGNITO_REGION=$(DEV_COGNITO_REGION)
               export REACT_APP_COGNITO_POOL_ID=$(DEV_COGNITO_POOL_ID)
               export REACT_APP_COGNITO_CLIENT_ID=$(DEV_COGNITO_CLIENT_ID)
@@ -145,7 +145,7 @@ stages:
               fi
             displayName: 'yarn install'
           - script: |
-              export REACT_APP_API_URL=$(PROD_URL)/api/todo/v1
+              export REACT_APP_API_URL=$(PROD_URL)/api
               export REACT_APP_COGNITO_REGION=$(PROD_COGNITO_REGION)
               export REACT_APP_COGNITO_POOL_ID=$(PROD_COGNITO_POOL_ID)
               export REACT_APP_COGNITO_CLIENT_ID=$(PROD_COGNITO_CLIENT_ID)

@@ -1,10 +1,10 @@
-import React, { FC, useState } from "react";
+import React, { FC, useState, useContext } from "react";
 import { Box, Text } from "react-basic-blocks";
 import { Checkbox, CheckboxSelected } from "grommet-icons";
 import ToDoForm from "components/ToDoForm";
 import { ITodo } from "interfaces";
 import toggleDone from "./toggle-done";
-import { GetJwt } from "components/CognitoAuth";
+import { AuthContext } from "components/CognitoAuth";
 
 interface IToDoItemProps {
   todo: ITodo;
@@ -13,7 +13,7 @@ interface IToDoItemProps {
 const ToDoItem: FC<IToDoItemProps> = ({ todo }) => {
   const [stateTodo, setStateTodo] = useState<ITodo>(todo);
   const [isEditing, setIsEditing] = useState<boolean>(false);
-  const jwt = GetJwt();
+  const { jwt } = useContext(AuthContext);
 
   return (
     <Box flexDirection="row" cursor="pointer">

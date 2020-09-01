@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from "react";
+import React, { FC, useEffect, useState, useContext } from "react";
 import { Box, Text } from "react-basic-blocks";
 import HeaderTags from "components/HeaderTags";
 import { fetchSingle } from "fetch-hooks-react";
@@ -8,10 +8,10 @@ import ToDoItem from "./ToDoItem";
 import { config } from "config";
 import { Add, Checkmark } from "grommet-icons";
 import { IListResults, ITodo } from "interfaces";
-import { GetJwt } from "components/CognitoAuth";
+import { AuthContext } from "components/CognitoAuth";
 
 const Home: FC = () => {
-  const jwt = GetJwt();
+  const { jwt } = useContext(AuthContext);
   const { data, isLoading, error } = fetchSingle<IListResults<ITodo>>(
     `${config.apiUrl}/todo/v1/todos?order=created_at:DESC&where=done:exact:true`,
     {

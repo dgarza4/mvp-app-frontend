@@ -15,8 +15,12 @@ import { useLocation } from "react-router";
 import { fetchSingle } from "fetch-hooks-react";
 import { config } from "config";
 
-export interface IAuthContext {
+export interface IAuthState {
   isSignedIn: boolean;
+  jwt?: string;
+}
+
+export interface IAuthContext extends IAuthState {
   user?: object;
 }
 
@@ -25,49 +29,50 @@ Amplify.configure(cognitoConfig);
 export const AuthContext = createContext<IAuthContext>({} as IAuthContext);
 
 export const AuthProvider: FC = ({ children }): ReactElement<any, any> => {
-  const [isSignedIn, setIsSignedIn] = useState<boolean>(false);
+  const [authState, setAuthState] = useState<IAuthState>({ isSignedIn: false });
   const { data } = fetchSingle<object>(
     `${config.apiUrl}/accounts/v1/identities/me`,
-    {},
-    [isSignedIn]
+    {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + authState.jwt,
+      },
+    },
+    [authState.isSignedIn]
   );
 
   useEffect(() => {
     const initialGuess = async () => {
       try {
         await Auth.currentAuthenticatedUser();
-        setIsSignedIn(true);
+        const currentSession = await Auth.currentSession();
+        const accessToken = currentSession.getAccessToken();
+        setAuthState({ isSignedIn: true, jwt: accessToken.getJwtToken() });
       } catch (err) {
         // not authenticated
       }
     };
 
+    const authCallback = async (nextAuthState: string) => {
+      if (nextAuthState === AuthState.SignedIn) {
+        const currentSession = await Auth.currentSession();
+        const accessToken = currentSession.getAccessToken();
+        setAuthState({ isSignedIn: true, jwt: accessToken.getJwtToken() });
+      } else {
+        setAuthState({ isSignedIn: false, jwt: undefined });
+      }
+    };
+
     initialGuess();
-    return onAuthUIStateChange((nextAuthState, authData) => {
-      setIsSignedIn(nextAuthState === AuthState.SignedIn);
-    });
+    return onAuthUIStateChange((nextAuthState, authData) => authCallback);
   }, []);
 
   // eslint-disable-next-line
   return (
-    <AuthContext.Provider value={{ isSignedIn, user: data }}>
+    <AuthContext.Provider value={{ ...authState, user: data }}>
       {children}
     </AuthContext.Provider>
   );
-};
-
-export const GetJwt = () => {
-  const [jwtToken, setJwtToken] = useState<string>();
-  useEffect(() => {
-    const getJwtToken = async () => {
-      const currentSession = await Auth.currentSession();
-      const accessToken = currentSession.getAccessToken();
-      setJwtToken(accessToken.getJwtToken());
-    };
-
-    getJwtToken();
-  }, []);
-  return jwtToken;
 };
 
 export const AuthComponent: FC = () => {
