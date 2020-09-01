@@ -64,7 +64,7 @@ export const AuthProvider: FC = ({ children }): ReactElement<any, any> => {
     };
 
     initialGuess();
-    return onAuthUIStateChange((nextAuthState, authData) => authCallback);
+    return onAuthUIStateChange(authCallback);
   }, []);
 
   // eslint-disable-next-line
