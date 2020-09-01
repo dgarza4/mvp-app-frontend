@@ -19,7 +19,8 @@
     "cy:test": "npm run clean-reports; npx cypress run --env type=actual --config baseUrl=${CYPRESS_BASE_URL}",
     "clean-reports": "rm -rf cypress/reports",
     "cy:merge": "junit-merge -d \"cypress/reports/tests\" --out cypress/reports/merged.xml",
-    "cy:open": "xunit-viewer -r cypress/reports/merged.xml -o cypress/reports/merged.html && open cypress/reports/merged.html"
+    "cy:open": "xunit-viewer -r cypress/reports/merged.xml -o cypress/reports/merged.html && open cypress/reports/merged.html",
+    "compress-images": "imagemin public/images/* --plugin=pngquant --plugin=mozjpeg --out-dir=public/images"
   },
   "dependencies": {
     "@aws-amplify/ui-components": "^0.6.2",
@@ -79,6 +80,9 @@
     "eslint-config-react-app": "^5.2.1",
     "eslint-plugin-react-hooks": "^4.0.0",
     "husky": "^4.2.5",
+    "imagemin-cli": "^6.0.0",
+    "imagemin-mozjpeg": "^9.0.0",
+    "imagemin-pngquant": "^9.0.0",
     "junit-merge": "^2.0.0",
     "prettier": "^2.0.5",
     "xunit-viewer": "^6.3.9"

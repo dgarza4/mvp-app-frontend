@@ -62,6 +62,7 @@ stages:
               export REACT_APP_COGNITO_REGION=$(DEV_COGNITO_REGION)
               export REACT_APP_COGNITO_POOL_ID=$(DEV_COGNITO_POOL_ID)
               export REACT_APP_COGNITO_CLIENT_ID=$(DEV_COGNITO_CLIENT_ID)
+              yarn compress-images
               yarn build-dev
               if [ $? -ne 0 ]; then
                   exit 1
@@ -148,6 +149,7 @@ stages:
               export REACT_APP_COGNITO_REGION=$(PROD_COGNITO_REGION)
               export REACT_APP_COGNITO_POOL_ID=$(PROD_COGNITO_POOL_ID)
               export REACT_APP_COGNITO_CLIENT_ID=$(PROD_COGNITO_CLIENT_ID)
+              yarn compress-images
               yarn build
               if [ $? -ne 0 ]; then
                   exit 1
