@@ -1,9 +1,9 @@
-variables: 
+variables:
   # DEV
   - name: DEV_ENV_NAME
     value: dev-env-name
   - name: DEV_URL
-    value: http://mvp-app.cluster1.endvr-digital-dev.com/
+    value: http://mvp-app.cluster1.endvr-digital-dev.com
   - name: DEV_S3_BUCKET_NAME
     value:  endvr-d-mvp-app
   - name: DEV_COGNITO_REGION
@@ -35,14 +35,14 @@ trigger:
 #  displayName: Fifteen minute content build
 #  branches:
 #    include:
-#    - master 
-#  always: true  
+#    - master
+#  always: true
 
 pool:
   vmImage: 'ubuntu-latest'
 
 stages:
-  - stage: StagingDeploy  
+  - stage: StagingDeploy
     displayName: "Deploy To Staging"
     jobs:
       - job: Build
@@ -56,7 +56,7 @@ stages:
               if [ $? -ne 0 ]; then
                   exit 1
               fi
-            displayName: 'yarn install'          
+            displayName: 'yarn install'
           - script: |
               export REACT_APP_API_URL=$(DEV_URL)/api/todo/v1
               export REACT_APP_COGNITO_REGION=$(DEV_COGNITO_REGION)
@@ -65,13 +65,13 @@ stages:
               yarn build-dev
               if [ $? -ne 0 ]; then
                   exit 1
-              fi  
-            displayName: 'Build deployable package'            
+              fi
+            displayName: 'Build deployable package'
           - publish: $(Build.Repository.LocalPath)/build
             artifact: StagingWebApp
       - deployment: StagingDeploy
         displayName: "Deploy"
-        pool: 
+        pool:
           vmImage: 'ubuntu-latest'
         environment: $(DEV_ENV_NAME)
         strategy:
@@ -87,7 +87,7 @@ stages:
                   regionName: 'us-east-2'
                   bucketName: $(DEV_S3_BUCKET_NAME)
                   sourceFolder: '$(Pipeline.Workspace)/StagingWebApp'
-                  globExpressions: '**'                              
+                  globExpressions: '**'
                   filesAcl: 'public-read'
       - job: Cypress
         dependsOn: StagingDeploy
@@ -97,7 +97,7 @@ stages:
               if [ $? -ne 0 ]; then
                   exit 1
               fi
-            displayName: 'yarn install'          
+            displayName: 'yarn install'
           - script: |
               export CYPRESS_BASE_URL=$(DEV_URL)
               yarn run cy:test
@@ -105,11 +105,11 @@ stages:
               if [ $? -ne 0 ]; then
                   exit 1
               fi
-            displayName: 'yarn run cy:test'          
+            displayName: 'yarn run cy:test'
           - task: PublishTestResults@2
             inputs:
               testResultsFormat: 'JUnit'
-              testResultsFiles: '**/reports/merged.xml' 
+              testResultsFiles: '**/reports/merged.xml'
               mergeTestResults: true
               failTaskOnFailedTests: false
               testRunTitle: Cypress Test Results
@@ -125,8 +125,8 @@ stages:
                 no-vulnerable-libraries = 1
                 robots-txt = 1
                 speed-index > 0.5
-  
-  - stage: ProductionDeploy  
+
+  - stage: ProductionDeploy
     displayName: "Deploy To Production"
     dependsOn:
       - StagingDeploy
@@ -142,7 +142,7 @@ stages:
               if [ $? -ne 0 ]; then
                   exit 1
               fi
-            displayName: 'yarn install'          
+            displayName: 'yarn install'
           - script: |
               export REACT_APP_API_URL=$(PROD_URL)/api/todo/v1
               export REACT_APP_COGNITO_REGION=$(PROD_COGNITO_REGION)
@@ -151,13 +151,13 @@ stages:
               yarn build
               if [ $? -ne 0 ]; then
                   exit 1
-              fi  
-            displayName: 'Build deployable package'                    
+              fi
+            displayName: 'Build deployable package'
           - publish: $(Build.Repository.LocalPath)/build
             artifact: ProductionWebApp
       - deployment: ProductionDeploy
         displayName: "Deploy"
-        pool: 
+        pool:
           vmImage: 'ubuntu-latest'
         environment: $(PROD_ENV_NAME)
         strategy:
@@ -173,7 +173,7 @@ stages:
                   regionName: 'us-west-2'
                   bucketName: $(PROD_S3_BUCKET_NAME)
                   sourceFolder: '$(Pipeline.Workspace)/ProductionWebApp'
-                  globExpressions: '**'          
+                  globExpressions: '**'
                   filesAcl: 'public-read'
               - task: AWSCLI@1
                 displayName: 'Invalidate CDN caching of index.html'
@@ -181,7 +181,7 @@ stages:
                   awsCredentials: 'CDP AWS Subscription'
                   regionName: 'us-west-2'
                   awsCommand: 'cloudfront'
-                  awsSubCommand: 'create-invalidation'   
+                  awsSubCommand: 'create-invalidation'
                   awsArguments: '--distribution-id ELPJK0DT806PY --paths "/index.html"'
       - job: Cypress
         dependsOn: ProductionDeploy
@@ -191,7 +191,7 @@ stages:
               if [ $? -ne 0 ]; then
                   exit 1
               fi
-            displayName: 'yarn install'          
+            displayName: 'yarn install'
           - script: |
               export CYPRESS_BASE_URL=$(PROD_URL)
               yarn run cy:test
@@ -199,11 +199,11 @@ stages:
               if [ $? -ne 0 ]; then
                   exit 1
               fi
-            displayName: 'yarn run cy:test'          
+            displayName: 'yarn run cy:test'
           - task: PublishTestResults@2
             inputs:
               testResultsFormat: 'JUnit'
-              testResultsFiles: '**/reports/merged.xml' 
+              testResultsFiles: '**/reports/merged.xml'
               mergeTestResults: true
               failTaskOnFailedTests: false
               testRunTitle: Cypress Test Results
