@@ -8,6 +8,7 @@ describe("Registration form", () => {
         utils.setViewPortToScreenSize(screenSize);
 
         cy.clearCookies();
+        cy.clearLocalStorage();
         cy.visit("/");
 
         cy.get("[data-test=sign-in]");
@@ -31,6 +32,7 @@ describe("Registration form", () => {
         utils.setViewPortToScreenSize(screenSize);
 
         cy.clearCookies();
+        cy.clearLocalStorage();
         cy.visit("/auth/signin");
 
         cy.get("#username", { includeShadowDom: true });

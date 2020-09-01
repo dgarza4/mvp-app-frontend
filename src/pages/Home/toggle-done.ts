@@ -11,7 +11,7 @@ const toggleDone = (
   }
 
   const value = { ...todo, done: !todo.done };
-  fetch(`${config.apiUrl}/todos/${todo.id}`, {
+  fetch(`${config.apiUrl}/todo/v1/todos/${todo.id}`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",

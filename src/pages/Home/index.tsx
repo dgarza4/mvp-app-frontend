@@ -13,7 +13,7 @@ import { GetJwt } from "components/CognitoAuth";
 const Home: FC = () => {
   const jwt = GetJwt();
   const { data, isLoading, error } = fetchSingle<IListResults<ITodo>>(
-    `${config.apiUrl}/todos?order=created_at:DESC&where=done:exact:true`,
+    `${config.apiUrl}/todo/v1/todos?order=created_at:DESC&where=done:exact:true`,
     {
       headers: { Authorization: `Bearer ${jwt}` },
     },

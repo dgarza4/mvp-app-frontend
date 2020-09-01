@@ -12,9 +12,12 @@ import { AmplifyAuthenticator, AmplifySignUp } from "@aws-amplify/ui-react";
 import { cognitoConfig, signUpFormFields } from "./config";
 import { Box } from "react-basic-blocks";
 import { useLocation } from "react-router";
+import { fetchSingle } from "fetch-hooks-react";
+import { config } from "config";
 
 export interface IAuthContext {
   isSignedIn: boolean;
+  user?: object;
 }
 
 Amplify.configure(cognitoConfig);
@@ -23,6 +26,11 @@ export const AuthContext = createContext<IAuthContext>({} as IAuthContext);
 
 export const AuthProvider: FC = ({ children }): ReactElement<any, any> => {
   const [isSignedIn, setIsSignedIn] = useState<boolean>(false);
+  const { data } = fetchSingle<object>(
+    `${config.apiUrl}/accounts/v1/identities/me`,
+    {},
+    [isSignedIn]
+  );
 
   useEffect(() => {
     const initialGuess = async () => {
@@ -42,7 +50,7 @@ export const AuthProvider: FC = ({ children }): ReactElement<any, any> => {
 
   // eslint-disable-next-line
   return (
-    <AuthContext.Provider value={{ isSignedIn }}>
+    <AuthContext.Provider value={{ isSignedIn, user: data }}>
       {children}
     </AuthContext.Provider>
   );

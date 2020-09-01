@@ -18,7 +18,7 @@ const onSubmit = (
 
   const { title } = data;
   if (title) {
-    const baseUrl = `${config.apiUrl}/todos`;
+    const baseUrl = `${config.apiUrl}/todo/v1/todos`;
     const url = todo.id ? `${baseUrl}/${todo.id}` : baseUrl;
     fetch(url, {
       method: todo.id ? "PUT" : "POST",
