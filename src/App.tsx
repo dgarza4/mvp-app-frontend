@@ -1,7 +1,7 @@
-import React, { FC, useContext } from "react";
+import React, { FC, useContext, useEffect } from "react";
 import styled from "styled-components/macro";
 import { Box } from "react-basic-blocks";
-import { Route, Switch, Redirect } from "react-router";
+import { Route, Switch, Redirect, useLocation } from "react-router";
 import AppHeader from "components/AppHeader";
 import Settings from "pages/Settings";
 import Home from "pages/Home";
@@ -27,6 +27,19 @@ const Wrapper = styled.div`
   }
 `;
 
+declare global {
+  interface Window {
+    analytics: any;
+  }
+}
+
+const usePageviews = () => {
+  const location = useLocation();
+  useEffect(() => {
+    window.analytics.page(location.pathname);
+  });
+};
+
 const ProtectedApp: FC = () => {
   return (
     <Wrapper>
@@ -46,6 +59,7 @@ const ProtectedApp: FC = () => {
 };
 
 const App: FC = () => {
+  usePageviews();
   const { isSignedIn } = useContext(AuthContext);
   return (
     <Switch>

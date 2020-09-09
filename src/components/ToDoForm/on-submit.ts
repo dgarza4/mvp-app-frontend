@@ -15,13 +15,14 @@ const onSubmit = (
   if (!token) {
     return;
   }
+  const create = !todo.id;
 
   const { title } = data;
   if (title) {
     const baseUrl = `${config.apiUrl}/todo/v1/todos`;
     const url = todo.id ? `${baseUrl}/${todo.id}` : baseUrl;
     fetch(url, {
-      method: todo.id ? "PUT" : "POST",
+      method: create ? "POST" : "PUT",
       headers: {
         "Content-Type": "application/json",
         Authorization: "Bearer " + token,
@@ -30,6 +31,11 @@ const onSubmit = (
     })
       .then(async (res) => {
         const resData = await res.json();
+        window.analytics.track(create ? "Create Todo" : "Update Todo", {
+          id: resData.id,
+          title: resData.title,
+          done: resData.done,
+        });
         setStateTodo(resData);
         setIsEditing(false);
       })

@@ -6,7 +6,7 @@ import React, {
   ReactElement,
 } from "react";
 
-import Amplify, { Auth } from "aws-amplify";
+import Amplify, { Auth, Hub } from "aws-amplify";
 import { AuthState, onAuthUIStateChange } from "@aws-amplify/ui-components";
 import { AmplifyAuthenticator, AmplifySignUp } from "@aws-amplify/ui-react";
 import { cognitoConfig, signUpFormFields } from "./config";
@@ -24,13 +24,22 @@ export interface IAuthContext extends IAuthState {
   user?: object;
 }
 
+interface IUserIdentity {
+  account: {
+    id: string;
+    given_name: string;
+    family_name: string;
+    email: string;
+  };
+}
+
 Amplify.configure(cognitoConfig);
 
 export const AuthContext = createContext<IAuthContext>({} as IAuthContext);
 
 export const AuthProvider: FC = ({ children }): ReactElement<any, any> => {
   const [authState, setAuthState] = useState<IAuthState>({ isSignedIn: false });
-  const { data } = fetchSingle<object>(
+  const { data } = fetchSingle<IUserIdentity>(
     `${config.apiUrl}/accounts/v1/identities/me`,
     {
       headers: {
@@ -42,6 +51,25 @@ export const AuthProvider: FC = ({ children }): ReactElement<any, any> => {
   );
 
   useEffect(() => {
+    if (data?.account?.id) {
+      window.analytics.identify(data?.account?.id, {
+        givenName: data?.account?.given_name,
+        familyName: data?.account?.family_name,
+        email: data?.account?.email,
+      });
+    }
+  }, [data]);
+
+  useEffect(() => {
+    Hub.listen("auth", (eventData) => {
+      const {
+        payload: { event },
+      } = eventData;
+      if (!["configured"].includes(event)) {
+        window.analytics.track(event);
+      }
+    });
+
     const initialGuess = async () => {
       try {
         await Auth.currentAuthenticatedUser();

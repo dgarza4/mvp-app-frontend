@@ -20,6 +20,11 @@ const toggleDone = (
     body: JSON.stringify(value),
   })
     .then(() => {
+      window.analytics.track(!todo.done ? "Todo Undone" : "Todo Completed", {
+        id: todo.id,
+        title: todo.title,
+        done: !todo.done,
+      });
       setStateTodo(value);
     })
     .catch(() => {
