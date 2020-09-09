@@ -85,3 +85,7 @@ Generate report:
 ```sh
 yarn run cy:report
 ```
+
+### Identity and Event tracking
+
+This repo uses segment to track user identities and to track events. To find where we are tracking, search for `window.analytics.`.
