@@ -39,6 +39,7 @@ export const AuthContext = createContext<IAuthContext>({} as IAuthContext);
 
 export const AuthProvider: FC = ({ children }): ReactElement<any, any> => {
   const [authState, setAuthState] = useState<IAuthState>({ isSignedIn: false });
+  const [authEvent, setAuthEvent] = useState<string>("");
   const { data } = fetchSingle<IUserIdentity>(
     `${config.apiUrl}/accounts/v1/identities/me`,
     {
@@ -61,12 +62,18 @@ export const AuthProvider: FC = ({ children }): ReactElement<any, any> => {
   }, [data]);
 
   useEffect(() => {
+    if (authEvent) {
+      window.analytics.track(authEvent);
+    }
+  }, [authEvent]);
+
+  useEffect(() => {
     Hub.listen("auth", (eventData) => {
       const {
         payload: { event },
       } = eventData;
       if (!["configured"].includes(event)) {
-        window.analytics.track(event);
+        setAuthEvent(event);
       }
     });
 
