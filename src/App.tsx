@@ -37,7 +37,7 @@ const usePageviews = () => {
   const location = useLocation();
   useEffect(() => {
     window.analytics.page(location.pathname);
-  });
+  }, [location.pathname]);
 };
 
 const ProtectedApp: FC = () => {

@@ -10,7 +10,8 @@ const toggleDone = (
     return;
   }
 
-  const value = { ...todo, done: !todo.done };
+  const done = !todo.done;
+  const value = { ...todo, done };
   fetch(`${config.apiUrl}/todo/v1/todos/${todo.id}`, {
     method: "PUT",
     headers: {
@@ -19,15 +20,20 @@ const toggleDone = (
     },
     body: JSON.stringify(value),
   })
-    .then(() => {
-      window.analytics.track(!todo.done ? "Todo Undone" : "Todo Completed", {
-        id: todo.id,
-        title: todo.title,
-        done: !todo.done,
-      });
-      setStateTodo(value);
+    .then((res) => {
+      if (res.status < 400) {
+        window.analytics.track(done ? "Todo Completed" : "Todo Undone", {
+          id: todo.id,
+          title: todo.title,
+          done: !todo.done,
+        });
+        setStateTodo(value);
+      } else {
+        window.alert("Error checking todo");
+      }
     })
     .catch(() => {
+      window.alert("Error checking todo");
       // handle err
     });
 };
